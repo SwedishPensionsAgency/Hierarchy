@@ -33,9 +33,9 @@ Let's say that we have a data frame of the following structure:
 Then we can group them within an hierarchical object:
 
     h <- Hierarchy(data, 
-                   id = c("Hid", "Name"),
-                   concepts = c("Year", "Month"), 
-                   metrics = "Weight")
+                   id = "Hid",
+                   concepts = c("Name", "Year", "Month"), 
+                   metrics = c("Weight", "Consumption"))
 
 
 And thus, calculate the aggreggate sum of all children of an hierarchical object:
