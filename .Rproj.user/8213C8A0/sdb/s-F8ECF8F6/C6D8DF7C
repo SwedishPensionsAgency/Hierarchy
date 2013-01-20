@@ -1,0 +1,15 @@
+{
+    "contents" : "Hierarchy\n=========\n\nThe purpose of this package is to simplify the work with hierarchical data structures in R.\n\nE.g.\n\n            *{... attributes ...}*   \n    Hid     Name        Year        Value\n    1       KPI         2012        \n    \n",
+    "created" : 1358672164753.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1892492902",
+    "id" : "C6D8DF7C",
+    "lastKnownWriteTime" : 1358672911,
+    "path" : "~/Documents/GitHub/Hierarchy/README.md",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "markdown"
+}
