@@ -12,7 +12,6 @@ The Hierarchy package aims to simplify the work with hierarchical data structure
 - aggreggate: calculates the sum of all children
 - Implement regexp support in aggreggate function
 
-
 ## Example
 
 Let's say that we have a data frame of the following structure:
