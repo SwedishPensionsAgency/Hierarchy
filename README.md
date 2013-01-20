@@ -44,14 +44,14 @@ And thus, calculate the aggregate sum of all children of an hierarchical object:
     aggregate(h, id = "1.1", "sum")
     
     Id      Name                Year      Month       Weight    Consumption
-    1.1     Inventarier         2012      12          5,11      65000
+    1.1     Inventarier         2012      12          5.11      65000
     
 It is also possible to aggregate several objects at the same time (with *):
 
     aggregate(h, id = "1.*", "sum")
     
     Id      Name                Year      Month       Weight    Consumption
-    1.1     Inventarier         2012      12          5,11      65000
+    1.1     Inventarier         2012      12          5.11      65000
     1.2     Hälso- och sjukvård 2012      12          4.01      22000
     
     

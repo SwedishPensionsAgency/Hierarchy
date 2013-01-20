@@ -39,9 +39,9 @@ setMethod (
 
 #' Create new Hierarchy object
 #' 
-#' Method to create a new hierarchical data set/structure.
+#' Method to create a new hierarchical object.
 #' 
-#' @param data Data frame/table
+#' @param data Data frame or data table
 #' @param id Name of id column
 #' @param labels Name of label columns
 #' @param dimensions Name of dimension columns (e.g. year, month)
