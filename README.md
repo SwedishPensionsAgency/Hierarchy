@@ -11,6 +11,16 @@ The Hierarchy package aims to simplify the work with hierarchical data structure
 - to_json: converts object to an json string.
 - aggreggate: calculates the sum of all children
 
+
+## Syntax
+
+    "data" is of the format of the example data structure below.
+
+    h <- Hierarchy(data, 
+                   variable = c("Hid", "Name"), 
+                   dimensions = c("Year", "Month"), 
+                   metrics = "Weight")
+
 ## Data structure
 
 E.g.
