@@ -1,7 +1,7 @@
 Hierarchy
 =========
 
-The purpose of this package is to simplify the work with hierarchical data structures in R.
+The Hierarchy package aims to simplify the work with hierarchical data structures in R.
 
 ## Todo
 

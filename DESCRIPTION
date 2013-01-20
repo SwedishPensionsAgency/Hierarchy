@@ -1,9 +1,9 @@
 Package: Hierarchy
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: The Hierarchy package aims to simplify the work with hierarchical data structures in R.
+Version: 0.9
 Date: 2013-01-20
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: Thomas Reinholdsson
+Maintainer: Thomas Reinholdsson <reinholdsson@gmail.com>
+Description: ...
+License: ...
