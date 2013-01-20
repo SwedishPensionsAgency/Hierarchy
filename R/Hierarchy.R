@@ -1,15 +1,13 @@
 setClass(
     Class = "Hierarchy",
-    # dims => list / vector / data.frame??
     representation = representation(
-        data = "data.frame", 
+        data = "data.table", 
         id = "character", 
         labels = "character", 
         dimensions = "character", 
-        value = "numeric"),
+        metrics = "character"),
     validity = function(object){
-        # TODO
-        # - must be of equal length
+        # Todo: Add validation tests
         return(TRUE)
     }
 )
@@ -21,10 +19,19 @@ setClass(
 setMethod (
     f = "initialize",
     signature = "Hierarchy",
-    definition = function(.Object, hid, dims = NULL, value = NULL) {
-        .Object@hid <- hid
-        .Object@dims <- dims
-        .Object@value <- value
+    definition = function(.Object, data, id, labels = NULL, dimensions = NULL, metrics = NULL) {
+        
+        if (!is.data.table(data)) {
+            .Object@data <- as.data.table(data)
+        } else {
+            .Object@data <- data
+        }
+        .Object@id <- id
+        
+        if (!is.null(labels)) .Object@labels <- labels
+        if (!is.null(dimensions)) .Object@dimensions <- dimensions
+        if (!is.null(metrics)) .Object@metrics <- metrics
+        
         validObject(.Object)
         return(.Object)
     }
@@ -34,14 +41,15 @@ setMethod (
 #' 
 #' Method to create a new hierarchical data set/structure.
 #' 
-#' @param hid Hierarchical id vector
-#' @param name Name vector
-#' @param dims Dimension vector (e.g. year, month)
-#' @param value Metric value
+#' @param data Data frame/table
+#' @param id Name of id column
+#' @param labels Name of label columns
+#' @param dimensions Name of dimension columns (e.g. year, month)
+#' @param metrics Name of metric columns
 #' 
-#' @examples db <- cdb()
+#' @import data.table
 #' @export
 #' 
-cdb <- function(...) {
-    new(Class = "cdb", ...)
+Hierarchy <- function(...) {
+    new(Class = "Hierarchy", ...)
 }
