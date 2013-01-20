@@ -3,8 +3,11 @@ Hierarchy
 
 The purpose of this package is to simplify the work with hierarchical data structures in R.
 
-TODO:
+## Todo
+
 - S4: subclass of data frame
+- Validate (add this to S4 constructor, so that it validates the format)
+- Hid delimiter (allow "-", ".", etc.)
 - to_json: converts object to an json string.
 - aggreggate: calculates the sum of all children
 
