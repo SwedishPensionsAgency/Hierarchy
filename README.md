@@ -16,25 +16,25 @@ The Hierarchy package aims to simplify the work with hierarchical data structure
 
 Let's say that we have a data frame of the following structure:
 
-    { - ID - }  { - Description - }   { - Dimensions - }    { - Metrics - }
-    Hid         Name                  Year      Month       Weight  Consumption
+    { - ID - }  { ----------- Concepts ------------ }   { --- Metrics --- }
+    Hid         Name                  Year      Month   Weight  Consumption
     1           KPI                   2012      12
     1.1         Inventarier           2012      12
     1.1.1       Möbler                2012      12
-    1.1.1.1     Matbord               2012      12          1.48    40000
-    1.1.1.2     Säng                  2012      12          2.90    20000
-    1.1.1.3     Taklampa              2012      12          2.21    5000
+    1.1.1.1     Matbord               2012      12      1.48    40000
+    1.1.1.2     Säng                  2012      12      2.90    20000
+    1.1.1.3     Taklampa              2012      12      2.21    5000
     1.2         Hälso- och sjukvård   2012      12
     1.2.1       Läkemedel             2012      12
-    1.2.1.1     Sjukvårdsartiklar     2012      12          0.98    10000
-    1.2.1.2     Naturläkemedel        2012      12          3.03    12000
+    1.2.1.1     Sjukvårdsartiklar     2012      12      0.98    10000
+    1.2.1.2     Naturläkemedel        2012      12      3.03    12000
 
 
 Then we can group them within an hierarchical object:
 
     h <- Hierarchy(data, 
-                   variable = c("Hid", "Name"),
-                   dimensions = c("Year", "Month"), 
+                   id = c("Hid", "Name"),
+                   concepts = c("Year", "Month"), 
                    metrics = "Weight")
 
 
