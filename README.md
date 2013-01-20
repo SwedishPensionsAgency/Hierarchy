@@ -3,6 +3,13 @@ Hierarchy
 
 The purpose of this package is to simplify the work with hierarchical data structures in R.
 
+TODO:
+- S4: subclass of data frame
+- to_json: converts object to an json string.
+- aggreggate: calculates the sum of all children
+
+## Data structure
+
 E.g.
 
                       { ----- attributes ----- }  
