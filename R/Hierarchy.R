@@ -1,7 +1,12 @@
 setClass(
     Class = "Hierarchy",
     # dims => list / vector / data.frame??
-    representation = representation(hid = "character", dims = "data.frame", value = "numeric"),
+    representation = representation(
+        data = "data.frame", 
+        id = "character", 
+        labels = "character", 
+        dimensions = "character", 
+        value = "numeric"),
     validity = function(object){
         # TODO
         # - must be of equal length

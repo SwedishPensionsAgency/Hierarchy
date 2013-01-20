@@ -9,8 +9,8 @@ The Hierarchy package aims to simplify the work with hierarchical data structure
 - Validate (add this to S4 constructor, so that it validates the format)
 - Hid delimiter (allow "-", ".", etc.)
 - to_json: converts object to an json string
-- aggreggate: calculates the sum of all children
-- Implement regexp support in aggreggate function
+- aggregate: calculates the sum of all children
+- Implement regexp support in aggregate function
 
 ## Example
 
@@ -39,16 +39,16 @@ Then we can group them within an hierarchical object:
                    metrics = c("Weight", "Consumption"))
 
 
-And thus, calculate the aggreggate sum of all children of an hierarchical object:
+And thus, calculate the aggregate sum of all children of an hierarchical object:
 
-    aggreggate(h, id = "1.1", "sum")
+    aggregate(h, id = "1.1", "sum")
     
     Id      Name                Year      Month       Weight    Consumption
     1.1     Inventarier         2012      12          5,11      65000
     
-It is also possible to aggreggate several objects at the same time (with *):
+It is also possible to aggregate several objects at the same time (with *):
 
-    aggreggate(h, id = "1.*", "sum")
+    aggregate(h, id = "1.*", "sum")
     
     Id      Name                Year      Month       Weight    Consumption
     1.1     Inventarier         2012      12          5,11      65000
