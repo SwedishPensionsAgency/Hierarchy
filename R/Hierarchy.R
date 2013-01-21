@@ -53,3 +53,19 @@ setMethod (
 Hierarchy <- function(...) {
     new(Class = "Hierarchy", ...)
 }
+
+#' Aggregate
+#' 
+#' ...
+#' 
+#' @export
+#' 
+setGeneric("aggr", function(object, id = "character"){ standardGeneric("aggr") })
+setMethod(
+    f = "aggr", 
+    signature = "Hierarchy",
+    definition = function(object, id) {
+        pattern <- sprintf("^%s", gsub("\\*", "\\\\w", id))
+        object@data[grepl(pattern, object@data$id)]
+    }
+)
