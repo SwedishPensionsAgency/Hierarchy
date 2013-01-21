@@ -54,18 +54,47 @@ Hierarchy <- function(...) {
     new(Class = "Hierarchy", ...)
 }
 
+#' Subset "["-method (overloading)
+#' 
+setMethod(
+    f = "[",
+    signature = "Hierarchy",
+    definition = function(x, i){
+        subs(x, i)
+    }
+)
+
 #' Aggregate
 #' 
 #' ...
 #' 
 #' @export
-#' 
-setGeneric("aggr", function(object, id = "character"){ standardGeneric("aggr") })
+setGeneric("aggr", function(object){ standardGeneric("aggr") })
 setMethod(
     f = "aggr", 
     signature = "Hierarchy",
+    definition = function(object) {
+        sapply(object@metrics, function(x) sum(object@data[[x]], na.rm = TRUE))
+        
+        # TODO: 
+        #   - Add "levels" argument
+        #   - 
+    }
+)
+
+#' Subset
+#' 
+#' ...
+#' 
+#' @export
+#' 
+setGeneric("subs", function(object, id = "character"){ standardGeneric("subs") })
+setMethod(
+    f = "subs", 
+    signature = "Hierarchy",
     definition = function(object, id) {
         pattern <- sprintf("^%s", gsub("\\*", "\\\\w", id))
-        object@data[grepl(pattern, object@data$id)]
+        object@data <- object@data[grepl(pattern, object@data$id)]
+        return(object)
     }
 )
