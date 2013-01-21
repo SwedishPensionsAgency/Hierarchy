@@ -61,6 +61,7 @@ setMethod(
     signature = "Hierarchy",
     definition = function(x, i){
         subs(x, i)
+        # TODO: add "dims" argument; which subsets on chosen dimensions
     }
 )
 
@@ -76,9 +77,7 @@ setMethod(
     definition = function(object) {
         sapply(object@metrics, function(x) sum(object@data[[x]], na.rm = TRUE))
         
-        # TODO: 
-        #   - Add "levels" argument
-        #   - 
+        # TODO: add "levels" argument; similar to cast
     }
 )
 
