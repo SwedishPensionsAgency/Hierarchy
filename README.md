@@ -1,6 +1,8 @@
 Hierarchy
 =========
 
+** UNDER HEAVY DEVELOPMENT **
+
 The Hierarchy package aims to simplify the work with hierarchical data structures in R.
 
 ## Todo

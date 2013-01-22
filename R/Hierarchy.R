@@ -56,7 +56,8 @@ setMethod(
     f = "[",
     signature = "Hierarchy",
     definition = function(x, i){
-        subs(x, i)
+        aggr(x, pattern = i)
+        
         # TODO: add "dims" argument; which subsets on chosen dimensions
     }
 )
@@ -66,19 +67,23 @@ setMethod(
 #' ...
 #' 
 #' @export
-setGeneric("aggr", function(object, sum_all = "logical"){ standardGeneric("aggr") })
+setGeneric("aggr", function(object, pattern = "character", sum_all = "logical"){ standardGeneric("aggr") })
 setMethod(
     f = "aggr", 
     signature = "Hierarchy",
-    definition = function(object, sum_all = FALSE) {
+    definition = function(object, pattern = "", sum_all = FALSE) {
         if (sum_all) {
             x <- sapply(object@metrics, function(x) sum(object@data[[x]], na.rm = TRUE))
         } else {
             ids <- get_id(object)
-            x <- do.call("rbind", lapply(ids, function(x) aggr(object[x], sum_all = TRUE)))
+            x <- do.call("rbind", lapply(ids, function(x) aggr(subs(object, x), sum_all = TRUE)))
             rownames(x) <- ids
+            x <- data.frame(x)
+            x <- x[grepl(pattern, rownames(x)), ]
         }
+        
         return(x)
+        
         # TODO: add "levels" argument; similar to cast
     }
 )
