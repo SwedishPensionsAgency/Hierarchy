@@ -99,7 +99,7 @@ setMethod(
     f = "subs",
     signature = "Hierarchy",
     definition = function(object, id) {
-        pattern <- sprintf("^%s", gsub("\\*", "\\\\w", id))
+        pattern <- sprintf("^%s(\\.|$)", gsub("\\.", "\\\\.", id))
         object@data <- object@data[grepl(pattern, get_id(object)), ]
         return(object)
     }
