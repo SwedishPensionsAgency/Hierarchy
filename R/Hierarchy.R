@@ -1,7 +1,7 @@
 setClass(
     Class = "Hierarchy",
     representation = representation(
-        data = "data.table", 
+        data = "data.frame", 
         id = "character", 
         labels = "character", 
         dimensions = "character", 
@@ -20,12 +20,8 @@ setMethod (
     f = "initialize",
     signature = "Hierarchy",
     definition = function(.Object, data, id, labels = NULL, dimensions = NULL, metrics = NULL) {
-        
-        if (!is.data.table(data)) {
-            .Object@data <- as.data.table(data)
-        } else {
-            .Object@data <- data
-        }
+
+        .Object@data <- data
         .Object@id <- id
         
         if (!is.null(labels)) .Object@labels <- labels
@@ -70,13 +66,19 @@ setMethod(
 #' ...
 #' 
 #' @export
-setGeneric("aggr", function(object){ standardGeneric("aggr") })
+setGeneric("aggr", function(object, sum_all = "logical"){ standardGeneric("aggr") })
 setMethod(
     f = "aggr", 
     signature = "Hierarchy",
-    definition = function(object) {
-        sapply(object@metrics, function(x) sum(object@data[[x]], na.rm = TRUE))
-        
+    definition = function(object, sum_all = FALSE) {
+        if (sum_all) {
+            x <- sapply(object@metrics, function(x) sum(object@data[[x]], na.rm = TRUE))
+        } else {
+            ids <- get_id(object)
+            x <- do.call("rbind", lapply(ids, function(x) aggr(object[x], sum_all = TRUE)))
+            rownames(x) <- ids
+        }
+        return(x)
         # TODO: add "levels" argument; similar to cast
     }
 )
@@ -89,11 +91,25 @@ setMethod(
 #' 
 setGeneric("subs", function(object, id = "character"){ standardGeneric("subs") })
 setMethod(
-    f = "subs", 
+    f = "subs",
     signature = "Hierarchy",
     definition = function(object, id) {
         pattern <- sprintf("^%s", gsub("\\*", "\\\\w", id))
-        object@data <- object@data[grepl(pattern, object@data$id)]
+        object@data <- object@data[grepl(pattern, get_id(object)), ]
         return(object)
+    }
+)
+
+#' Get id's
+#' 
+#' ...
+#' 
+#' @export
+setGeneric("get_id", function(object){ standardGeneric("get_id") })
+setMethod(
+    f = "get_id", 
+    signature = "Hierarchy",
+    definition = function(object) {
+        object@data[[object@id]]
     }
 )
