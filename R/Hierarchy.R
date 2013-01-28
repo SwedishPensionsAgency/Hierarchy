@@ -118,3 +118,16 @@ setMethod(
         object@data[[object@id]]
     }
 )
+
+#' Data frame to JSON
+#'
+#' Converts a data frame to a JSON array
+#' http://theweiluo.wordpress.com/2011/09/30/r-to-json-for-d3-js-and-protovis/
+#'
+#' @param df data frame
+#'
+#' @export
+#'
+to_json <- function(df) {
+    
+}
