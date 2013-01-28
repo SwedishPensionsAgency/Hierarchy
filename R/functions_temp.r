@@ -1,9 +1,8 @@
 library(RJSONIO)
 
-ch <- c("a", "a.a", "a.a.a", "a.a.a.a", "a.b", "b", "b.a")
-
 # Get hierarchical dimensions (occurences of ".")
 ch_dim <- function(x, delimiter = ".") {
+    x <- as.character(x)
     chr.count <- function(x) length(which(unlist(strsplit(x, NULL)) == delimiter))
     if (length(x) > 1) {
         sapply(x, chr.count) + 1
@@ -12,18 +11,28 @@ ch_dim <- function(x, delimiter = ".") {
     }
 }
 
-lst_fun <- function(ch, num = NULL, stp = NULL) {
+lst_fun <- function(ch, id_col = "id", num = NULL, stp = NULL) {
     
-    d <- ch_dim(ch)
+    # Convert data.frame to character
+    ch <- data.frame(lapply(ch, as.character), stringsAsFactors=FALSE)
+    
+    d <- ch_dim(ch[[id_col]])
     if (is.null(num)) num <- min(d)
     if (is.null(stp)) stp <- max(d)
     
-    lapply(ch[d == num], function(x) {
-        tt <- ch[grepl(sprintf("^%s.", x), ch)]
-        if (stp != num && length(tt) > 0) { 
-            list(name = x, children = lst_fun(tt, num + 1, stp)) 
-        } else { list(name = x) }
+    lapply(ch[d == num,][[id_col]], function(x) {
+        tt <- ch[grepl(sprintf("^%s.", x), ch[[id_col]]),]
+        current <- ch[ch[[id_col]] == x,]
+        if (stp != num && nrow(tt) > 0) { 
+            c(current, list(children = lst_fun(tt, id_col, num + 1, stp)))
+        } else { current }
     })
 }
 
-s <- toJSON(lst_fun(ch))
+ch <- data.frame(
+    id = c('1', '1.1', '1.1.1', '1.2'), 
+    value = c(1054343, 5, 543354543, 5))#, stringsAsFactors = FALSE)
+
+s <- toJSON(lst_fun(ch, "id"))
+
+#ch_dim(ch$id)
