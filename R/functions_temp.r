@@ -1,6 +1,5 @@
-library(RJSONIO)
 
-# Get hierarchical dimensions (occurences of ".")
+# Function to get the number hierarchical dimensions (occurences of "." + 1)
 ch_dim <- function(x, delimiter = ".") {
     x <- as.character(x)
     chr.count <- function(x) length(which(unlist(strsplit(x, NULL)) == delimiter))
@@ -11,15 +10,16 @@ ch_dim <- function(x, delimiter = ".") {
     }
 }
 
-lst_fun <- function(ch, id_col = "id", num = NULL, stp = NULL) {
+# Function to convert a hierarchical data.frame to a nested list
+lst_fun <- function(ch, id_col = "id", num = min(d), stp = max(d)) {
     
     # Convert data.frame to character
     ch <- data.frame(lapply(ch, as.character), stringsAsFactors=FALSE)
     
+    # Get number of hierarchical dimensions
     d <- ch_dim(ch[[id_col]])
-    if (is.null(num)) num <- min(d)
-    if (is.null(stp)) stp <- max(d)
     
+    # Convert to list
     lapply(ch[d == num,][[id_col]], function(x) {
         tt <- ch[grepl(sprintf("^%s.", x), ch[[id_col]]),]
         current <- ch[ch[[id_col]] == x,]
@@ -29,10 +29,9 @@ lst_fun <- function(ch, id_col = "id", num = NULL, stp = NULL) {
     })
 }
 
-ch <- data.frame(
-    id = c('1', '1.1', '1.1.1', '1.2'), 
-    value = c(1054343, 5, 543354543, 5))#, stringsAsFactors = FALSE)
+# Convert data.frame to list
+lst <- lst_fun(df, "id")
 
-s <- toJSON(lst_fun(ch, "id"))
+# Convert list to json
+s <- RJSONIO::toJSON(lst)
 
-#ch_dim(ch$id)
