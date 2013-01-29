@@ -50,54 +50,62 @@ Hierarchy <- function(...) {
     new(Class = "Hierarchy", ...)
 }
 
-#' Subset "["-method (overloading)
+#' Calculate Hierarchy object
 #' 
+#' @param object Hierarchy object
+#' @param fun Nested function; e.g. "sum", "mean", "max", etc. Default = "sum".
+#' @param id Hierarchical id; e.g. "1.1". Default = "\\w" (keep all).
+#' 
+#' @export
+#' 
+setGeneric("calc", function(object, fun = "character", id = "character"){ standardGeneric("calc") })
 setMethod(
-    f = "[",
+    f = "calc",
     signature = "Hierarchy",
-    definition = function(x, i, j = FALSE){
-        # j = nested sum
-        
-        
-        # TODO: Rewrite aggr so that I don't need all those fixes
-        if (j) {
-            data <- aggr(x, i)
-            id <- rownames(data)
-            data <- cbind(id, data)
-            rownames(data) <- NULL
-            x@data <- as.data.frame(data)
-        } else {
-            x <- subs(x, i)
-        }
-        return(x)
+    definition = function(object, fun = "sum", id = "\\w") {
 
-        # x <- aggr(...)
-        # if is.vector(x) { x <- as.data.frame(t(x)) }
-        # TODO: add "dims" argument; which subsets on chosen dimensions
+        # TODO: Rewrite aggr so that I don't need all those fixes
+        if (is.null(fun)) {
+            object <- subs(object, id)
+        } else {
+            data <- aggr(object, id, fun)
+            if (is.vector(data)) {
+                data <- cbind(id = "(all)", as.data.frame(t(data)))
+            } else {
+                id <- rownames(data)
+                data <- cbind(id, data)
+                rownames(data) <- NULL
+                data <- as.data.frame(data)
+            }
+            object@data <- data
+        }
+        return(object)
     }
 )
 
 #' Aggregate
 #' 
-#' ...
+#' ... (user: use calc instead)
 #' 
-#' @export
-setGeneric("aggr", function(object, id = "character", sum_all = "logical"){ standardGeneric("aggr") })
+#' @param object Hierarchy object
+#' @param id Hierarchical id of the head parent node
+#' @param fun Nested function
+#' 
+setGeneric("aggr", function(object, id = "character", fun = "character"){ standardGeneric("aggr") })
 setMethod(
     f = "aggr", 
     signature = "Hierarchy",
-    definition = function(object, id = "", sum_all = FALSE) {
-        if (sum_all) {
-            x <- sapply(object@metrics, function(x) sum(object@data[[x]], na.rm = TRUE))
+    definition = function(object, id = NULL, fun = "sum") {
+        if (is.null(id)) {
+            x <- sapply(object@metrics, function(x) do.call(fun, list(object@data[[x]], na.rm = TRUE)))
         } else {
             ids <- get_id(object)
-            x <- do.call("rbind", lapply(ids, function(x) aggr(subs(object, x), sum_all = TRUE)))
+            x <- do.call("rbind", lapply(ids, function(x) aggr(subs(object, x), id = NULL, fun = fun)))
             rownames(x) <- ids
             x <- data.frame(x)
             pattern <- sprintf("^%s(\\.|$)", gsub("\\.", "\\\\.", id))
             x <- x[grepl(pattern, rownames(x)), ]
         }
-        
         return(x)
         
         # TODO: add "levels" argument; similar to cast
@@ -107,9 +115,7 @@ setMethod(
 
 #' Subset
 #' 
-#' ...
-#' 
-#' @export
+#' ... (user: use calc instead)
 #' 
 setGeneric("subs", function(object, id = "character"){ standardGeneric("subs") })
 setMethod(
