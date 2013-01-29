@@ -55,9 +55,24 @@ Hierarchy <- function(...) {
 setMethod(
     f = "[",
     signature = "Hierarchy",
-    definition = function(x, i){
-        aggr(x, pattern = i)
+    definition = function(x, i, j = FALSE){
+        # j = nested sum
         
+        
+        # TODO: Rewrite aggr so that I don't need all those fixes
+        if (j) {
+            data <- aggr(x, i)
+            id <- rownames(data)
+            data <- cbind(id, data)
+            rownames(data) <- NULL
+            x@data <- as.data.frame(data)
+        } else {
+            x <- subs(x, i)
+        }
+        return(x)
+
+        # x <- aggr(...)
+        # if is.vector(x) { x <- as.data.frame(t(x)) }
         # TODO: add "dims" argument; which subsets on chosen dimensions
     }
 )
@@ -67,19 +82,19 @@ setMethod(
 #' ...
 #' 
 #' @export
-setGeneric("aggr", function(object, pattern = "character", sum_all = "logical"){ standardGeneric("aggr") })
+setGeneric("aggr", function(object, id = "character", sum_all = "logical"){ standardGeneric("aggr") })
 setMethod(
     f = "aggr", 
     signature = "Hierarchy",
-    definition = function(object, pattern = "", sum_all = FALSE) {
+    definition = function(object, id = "", sum_all = FALSE) {
         if (sum_all) {
             x <- sapply(object@metrics, function(x) sum(object@data[[x]], na.rm = TRUE))
-            #x[[object@id]] <- "all"
         } else {
             ids <- get_id(object)
             x <- do.call("rbind", lapply(ids, function(x) aggr(subs(object, x), sum_all = TRUE)))
             rownames(x) <- ids
             x <- data.frame(x)
+            pattern <- sprintf("^%s(\\.|$)", gsub("\\.", "\\\\.", id))
             x <- x[grepl(pattern, rownames(x)), ]
         }
         
