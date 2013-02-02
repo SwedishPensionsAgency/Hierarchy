@@ -6,9 +6,10 @@ dt <- data.frame(
 a <- path_enum$new(dt)
 a$data()
 
-x <- "1.1"
+x <- "1.12.1"
 a$descendants_ids(x)
 a$descendants(x)
+a$has_descendants(x)
 
 a$children_ids(x)
 a$children(x)

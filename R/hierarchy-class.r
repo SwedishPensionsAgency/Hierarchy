@@ -4,10 +4,10 @@ path_enum <- setRefClass(
     "path.enumeration",
     fields = list(.data = "character", .path = "character", .sep = "character"),
     methods = list(
-        initialize = function(x, y = colnames(x)[1]) {
-            .path <<- y  # have to be assigned before x
-            .sep <<- "\\."
-            .data <<- deparse(substitute(x))
+        initialize = function(data, path = colnames(data)[1], sep = "\\.") {
+            .path <<- path  # path has to be assigned before data
+            .sep <<- sep
+            .data <<- deparse(substitute(data))
         },
         
         # Get all data
@@ -30,7 +30,7 @@ path_enum <- setRefClass(
             validate(path)
             x <- gsub(sprintf("(^|%s)\\w*$", .sep), "", path)
             x <- as.character(x)
-            if (nchar(x) > 0) return(x) else return(NULL)
+            if (nchar(x) > 0) x else NULL
         },
         parent = function(...) data()[data()[[.path]] %in% parent_id(...), ],
         has_parent = function(path) if (is.null(parent_id(path))) FALSE else TRUE,
@@ -40,15 +40,17 @@ path_enum <- setRefClass(
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*(%2$s|$)")
             x <- as.character(x)
+            if (length(x) > 0) x else NULL
         },
         descendants = function(...) data()[data()[[.path]] %in% descendants_ids(...), ],
+        has_descendants = function(path) if (is.null(descendants_ids(path))) FALSE else TRUE,
         
         # Children methods
         children_ids = function(path) { 
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*$") 
             x <- as.character(x)
-            if (length(x) > 0) return(x) else return(NULL)
+            if (length(x) > 0) x else NULL
         },
         children = function(...) data()[data()[[.path]] %in% children_ids(...), ],
         has_children = function(path) if (is.null(children_ids(path))) FALSE else TRUE
