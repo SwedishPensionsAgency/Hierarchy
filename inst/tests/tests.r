@@ -1,7 +1,13 @@
 # test
+dt <- data.table(
+    id = c("1", "1.1", "1.1.1", "1.1.2", "1.12", "1.12.1", "1.12.2"), 
+    value = c(NA, NA, 5, 10, NA, 2, 3), 
+    weight = c(NA, NA, 5333, 10, NA, 2, 3))
+a <- Hierarchy$new(dt)
 
-data <- data.frame(id = c("1", "1.1", "1.1.1", "1.1.2", "1.12", "1.12.1", "1.12.2"), value = c(NA, NA, 5, 10, NA, 2, 3), value2 = c(NA, NA, 5333, 10, NA, 2, 3))
-h <- Hierarchy(data, id = "id", metrics = c("value", "value2"))
-calc(h, "mean", "1.1")
-as.list(calc(h, "mean", "1.1"))
-as.json(calc(h))  # default "sum".
+a$data()
+a$descendants_ids("1.1")
+a$descendants("1.1")
+
+a$children_ids("1")
+a$children("1")
