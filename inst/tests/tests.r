@@ -11,3 +11,6 @@ a$descendants("1.1")
 
 a$children_ids("1")
 a$children("1")
+
+a$parent_id("1.1.12")
+a$parent("1.1.12")
