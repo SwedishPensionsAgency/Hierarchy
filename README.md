@@ -1,11 +1,11 @@
 Hierarchy
 =========
 
-** Package is under heavy development **
+ ***Package is under heavy development***
 
-The Hierarchy package aims to simplify the work with hierarchical data structures in R.
-
-The project is currently maintained by Thomas Reinholdsson (<reinholdsson@gmail.com>).
+The Hierarchy package aims to simplify the work with hierarchical data structures in R. 
+It is inspired by [Ancestry](https://github.com/stefankroes/ancestry) - a Ruby and Rails gem/plugin by Stefan Henzen.
+Hierarchy is created and maintained by Thomas Reinholdsson (<reinholdsson@gmail.com>).
 
 
 ## Installation
@@ -17,7 +17,7 @@ library(devtools)
 install_github('Hierarchy', 'reinholdsson')
 ```
 
-## How to use
+## Usage
 
 ### Path Enumeration
 
