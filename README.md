@@ -1,25 +1,31 @@
 Hierarchy
 =========
 
-** UNDER HEAVY DEVELOPMENT **
+** Package is under heavy development **
 
 The Hierarchy package aims to simplify the work with hierarchical data structures in R.
 
-## Todo
+The project is currently maintained by Thomas Reinholdsson (<reinholdsson@gmail.com>).
 
-- S4: subclass of data frame
-- Validate (add this to S4 constructor, so that it validates the format)
-- Hid delimiter (allow "-", ".", etc.)
-- to_json: converts object to an json string
-- aggregate: calculates the sum of all children
-- Implement regexp support in aggregate function
+
+## Installation
+
+Use `devtools` for easy installation
+
+```r
+library(devtools)
+install_github('Hierarchy', 'reinholdsson')
+```
+
+## How to use
+
+### Path Enumeration
 
 ## Example
 
 Let's say that we have a data frame of the following structure:
 
-    { - Id - }  { ---- Labels ---- }  { - Dimensions - }    { --- Metrics --- }
-    Id          Name                  Year       Month      Weight  Consumption
+    id          name                  year       month      weight  consumption
     1           KPI                   
     1.1         Inventarier          
     1.1.1       Möbler               

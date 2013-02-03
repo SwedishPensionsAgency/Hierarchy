@@ -59,7 +59,7 @@ path_enum <- setRefClass(
         endnodes_ids = function(path) {
             if (has_descendants(path)) {
                 x <- descendants_ids(path)
-                x[sapply(x, function(i) { !has_children(i) })]
+                x <- x[sapply(x, function(i) { !has_children(i) })]
             } else {
                 x <- path
             }
@@ -70,7 +70,7 @@ path_enum <- setRefClass(
             if (length(metrics) > 1) {
                 y <- t(sapply(x, function(x) apply(subset(endnodes(x), select = metrics), 2, fun)))
             } else {
-                y <- data.frame(sapply(x, function(x) apply(subset(endnodes(x), select = "value"), 2, fun)))
+                y <- data.frame(sapply(x, function(x) apply(subset(endnodes(x), select = metrics), 2, fun)))
                 colnames(y) <- metrics
             }
             rownames(y) <- NULL
