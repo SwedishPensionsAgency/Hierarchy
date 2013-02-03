@@ -12,10 +12,8 @@ Hierarchy is created and maintained by Thomas Reinholdsson (<reinholdsson@gmail.
 
 Use `devtools` for easy installation
 
-```r
-library(devtools)
-install_github('Hierarchy', 'reinholdsson')
-```
+    library(devtools)
+    install_github('Hierarchy', 'reinholdsson')
 
 ## Usage
 
