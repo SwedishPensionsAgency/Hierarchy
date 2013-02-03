@@ -28,4 +28,4 @@ a$endnodes_ids(x)
 a$endnodes(x)
 
 a$endnodes_aggregate("1.1", c("weight"), function(x) sum(x, na.rm = TRUE))
-a$endnodes_aggregate("1.1", c("value", "weight"), function(x) mean(x, na.rm = TRUE))
+a$endnodes_aggregate("1.1", c("consumption", "weight"), function(x) mean(x, na.rm = TRUE))
