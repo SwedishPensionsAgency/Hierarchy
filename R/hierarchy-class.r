@@ -30,6 +30,7 @@ path_enum <- setRefClass(
             validate(path)
             x <- gsub(sprintf("(^|%s)\\w*$", .sep), "", path)
             x <- if (nchar(x) > 0) as.character(x) else NULL
+            return(x)
         },
         parent = function(...) data()[data()[[.path]] %in% parent_id(...), ],
         has_parent = function(path) !is.null(parent_id(path)),
@@ -39,6 +40,7 @@ path_enum <- setRefClass(
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*(%2$s|$)")
             x <- if (length(x) > 0) as.character(x) else NULL
+            return(x)
         },
         descendants = function(...) data()[data()[[.path]] %in% descendants_ids(...), ],
         has_descendants = function(path) !is.null(descendants_ids(path)),
@@ -48,9 +50,40 @@ path_enum <- setRefClass(
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*$") 
             x <- if (length(x) > 0) as.character(x) else NULL
+            return(x)
         },
         children = function(...) data()[data()[[.path]] %in% children_ids(...), ],
-        has_children = function(path) !is.null(children_ids(path))
+        has_children = function(path) !is.null(children_ids(path)),
+        
+        # End nodes (the last children of given nodes)
+        endnodes_ids = function(path) {
+            if (has_descendants(path)) {
+                x <- descendants_ids(path)
+                x[sapply(x, function(i) { !has_children(i) })]
+            } else {
+                x <- path
+            }
+            return(x)
+        },
+        endnodes = function(...) data()[data()[[.path]] %in% endnodes_ids(...), ],
+        endnodes_aggregate = function(x, metrics, fun) {
+            if (length(metrics) > 1) {
+                y <- t(sapply(x, function(x) apply(subset(endnodes(x), select = metrics), 2, fun)))
+            } else {
+                y <- data.frame(sapply(x, function(x) apply(subset(endnodes(x), select = "value"), 2, fun)))
+                colnames(y) <- metrics
+            }
+            rownames(y) <- NULL
+            
+            z <- cbind(subset(node(x), select = colnames(node(x))[!colnames(node(x)) %in% metrics]), y)
+            z <- z[ , colnames(data())]
+            return(z)
+        },
+        
+        # Node
+        node = function(path) data()[data()[[.path]] %in% path, ]
+        
+
         
     )
 )
