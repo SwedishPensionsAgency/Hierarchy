@@ -29,31 +29,28 @@ path_enum <- setRefClass(
         parent_id = function(path) {
             validate(path)
             x <- gsub(sprintf("(^|%s)\\w*$", .sep), "", path)
-            x <- as.character(x)
-            if (nchar(x) > 0) x else NULL
+            x <- if (nchar(x) > 0) as.character(x) else NULL
         },
         parent = function(...) data()[data()[[.path]] %in% parent_id(...), ],
-        has_parent = function(path) if (is.null(parent_id(path))) FALSE else TRUE,
+        has_parent = function(path) !is.null(parent_id(path)),
         
         # Descendants methods
         descendants_ids = function(path) {
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*(%2$s|$)")
-            x <- as.character(x)
-            if (length(x) > 0) x else NULL
+            x <- if (length(x) > 0) as.character(x) else NULL
         },
         descendants = function(...) data()[data()[[.path]] %in% descendants_ids(...), ],
-        has_descendants = function(path) if (is.null(descendants_ids(path))) FALSE else TRUE,
+        has_descendants = function(path) !is.null(descendants_ids(path)),
         
         # Children methods
         children_ids = function(path) { 
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*$") 
-            x <- as.character(x)
-            if (length(x) > 0) x else NULL
+            x <- if (length(x) > 0) as.character(x) else NULL
         },
         children = function(...) data()[data()[[.path]] %in% children_ids(...), ],
-        has_children = function(path) if (is.null(children_ids(path))) FALSE else TRUE
+        has_children = function(path) !is.null(children_ids(path))
         
     )
 )
