@@ -1,25 +1,29 @@
 Hierarchy
 =========
 
-** UNDER HEAVY DEVELOPMENT **
+** Package is under heavy development **
 
 The Hierarchy package aims to simplify the work with hierarchical data structures in R.
 
-## Todo
+The project is currently maintained by Thomas Reinholdsson (<reinholdsson@gmail.com>).
 
-- S4: subclass of data frame
-- Validate (add this to S4 constructor, so that it validates the format)
-- Hid delimiter (allow "-", ".", etc.)
-- to_json: converts object to an json string
-- aggregate: calculates the sum of all children
-- Implement regexp support in aggregate function
 
-## Example
+## Installation
 
-Let's say that we have a data frame of the following structure:
+Use `devtools` for easy installation
 
-    { - Id - }  { ---- Labels ---- }  { - Dimensions - }    { --- Metrics --- }
-    Id          Name                  Year       Month      Weight  Consumption
+```r
+library(devtools)
+install_github('Hierarchy', 'reinholdsson')
+```
+
+## How to use
+
+### Path Enumeration
+
+Let's say that we have a data frame `cpi` of the following structure:
+
+    id          name                  year       month      weight  consumption
     1           KPI                   
     1.1         Inventarier          
     1.1.1       Möbler               
@@ -32,28 +36,23 @@ Let's say that we have a data frame of the following structure:
     1.2.1.2     Naturläkemedel        2012      12          3.03    12000
 
 
-Then we can group them within an hierarchical object:
+Then we define the hierarchical structure to be a path enumeration 
 
-    h <- Hierarchy(data, 
-                   id = "Id",
-                   labels = "Name",
-                   dimensions = c("Year", "Month"), 
-                   metrics = c("Weight", "Consumption"))
+    a <- path_enum$new(cpi)
 
+And thus, calculate the aggregate sum of all endnodes, given a specific path id:
 
-And thus, calculate the aggregate sum of all children of an hierarchical object:
-
-    aggregate(h, id = "1.1", "sum")
+    a$endnodes_aggregate("1.1", c("weight", "consumption"), function(x) mean(x, na.rm = TRUE))
     
-    Id      Name                Year      Month       Weight    Consumption
+    id      name                year      month       weight    consumption
     1.1     Inventarier         2012      12          5.11      65000
-    
-It is also possible to aggregate several objects at the same time (with *):
 
-    aggregate(h, id = "1.*", "sum")
-    
-    Id      Name                Year      Month       Weight    Consumption
-    1.1     Inventarier         2012      12          5.11      65000
-    1.2     Hälso- och sjukvård 2012      12          4.01      22000
-    
-    
+
+## Development
+
+The *master* branch is the development branch, and might therefore be a bit instable. Stable releases are marked with tags, e.g. v1.0, where the first number represents a new stable release and the second number imply new bug fixes within the given release version.
+
+
+## License
+
+Hierarchy is licensed under the AGPLv3, the terms of which are included in the file LICENSE.
