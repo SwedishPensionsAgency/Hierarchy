@@ -11,7 +11,8 @@ kpi <- structure(list(
 a <- path_enum$new(kpi)
 a$data()
 
-x <- "1.1"
+x <- c("1.1", "1")
+
 a$descendants_ids(x)
 a$descendants(x)
 a$has_descendants(x)
