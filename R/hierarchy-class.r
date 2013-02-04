@@ -34,7 +34,6 @@ path_enum <- setRefClass(
         parent_id = function(path) {
             validate(path)
             x <- gsub(sprintf("(^|%s)\\w*$", .sep), "", path)
-            browser()
             x <- if (all(x == "")) NULL else unique(x[x != ""])
             return(x)
         },
