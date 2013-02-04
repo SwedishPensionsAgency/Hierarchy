@@ -14,7 +14,13 @@ path_enum <- setRefClass(
         data = function() eval(parse(text = .data)),
 
         # Get and filter data by match
-        match = function(path, re) data()[grep(sprintf(re, path, .sep), data()[[.path]]), ][[.path]],
+        #match = function(path, re) data()[grep(sprintf(re, path, .sep), data()[[.path]]), ][[.path]],  # TODO: Vectorize
+        match = function(path, re) {
+            fun <- function(x) grep(sprintf("^%1$s%2$s\\w*$", x, .sep), data()[[.path]])
+            match_paths <- unlist(lapply(path, fun))
+            match_paths <- unique(match_paths)
+            data()[match_paths, ][[.path]]
+        },
         
         # Check if path id exists in data
         path_exists = function(path) path %in% data()[[.path]],
@@ -46,7 +52,8 @@ path_enum <- setRefClass(
         has_descendants = function(path) !is.null(descendants_ids(path)),
         
         # Children methods
-        children_ids = function(path) { 
+        children_ids = function(path) {
+            browser()
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*$") 
             x <- if (length(x) > 0) as.character(x) else NULL
