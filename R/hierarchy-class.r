@@ -14,7 +14,6 @@ path_enum <- setRefClass(
         data = function() eval(parse(text = .data)),
 
         # Get and filter data by match
-        #match = function(path, re) data()[grep(sprintf(re, path, .sep), data()[[.path]]), ][[.path]],  # TODO: Vectorize
         match = function(path, re) {
             fun <- function(x) grep(sprintf("^%1$s%2$s\\w*$", x, .sep), data()[[.path]])
             match_paths <- unlist(lapply(path, fun))
@@ -35,11 +34,12 @@ path_enum <- setRefClass(
         parent_id = function(path) {
             validate(path)
             x <- gsub(sprintf("(^|%s)\\w*$", .sep), "", path)
-            x <- if (nchar(x) > 0) as.character(x) else NULL
+            browser()
+            x <- if (all(x == "")) NULL else unique(x[x != ""])
             return(x)
         },
         parent = function(...) data()[data()[[.path]] %in% parent_id(...), ],
-        has_parent = function(path) !is.null(parent_id(path)),
+        has_parent = function(path) unlist(sapply(path, function(x) !is.null(parent_id(x)))),
         
         # Descendants methods
         descendants_ids = function(path) {
