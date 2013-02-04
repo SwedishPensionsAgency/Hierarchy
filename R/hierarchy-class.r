@@ -23,7 +23,7 @@ path_enum <- setRefClass(
         },
         
         # Check if path id exists in data
-        path_exists = function(path) path %in% data()[[.path]],
+        path_exists = function(path) all(sapply(path, function(x) x %in% data()[[.path]])),
         
         # Validate path
         validate = function(path) if (!path_exists(path)) stop("path does not exist"),
@@ -53,7 +53,6 @@ path_enum <- setRefClass(
         
         # Children methods
         children_ids = function(path) {
-            browser()
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*$") 
             x <- if (length(x) > 0) as.character(x) else NULL
