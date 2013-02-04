@@ -15,7 +15,7 @@ path_enum <- setRefClass(
 
         # Get and filter data by match
         match = function(path, re) {
-            fun <- function(x) grep(sprintf("^%1$s%2$s\\w*$", x, .sep), data()[[.path]])
+            fun <- function(x) grep(sprintf(re, x, .sep), data()[[.path]])
             match_paths <- unlist(lapply(path, fun))
             match_paths <- unique(match_paths)
             data()[match_paths, ][[.path]]
@@ -34,7 +34,7 @@ path_enum <- setRefClass(
         parent_id = function(path) {
             validate(path)
             x <- gsub(sprintf("(^|%s)\\w*$", .sep), "", path)
-            x <- if (all(x == "")) NULL else unique(x[x != ""])
+            x <- if (all(x == "")) NULL else sort(unique(x[x != ""]))
             return(x)
         },
         parent = function(...) data()[data()[[.path]] %in% parent_id(...), ],
@@ -43,24 +43,32 @@ path_enum <- setRefClass(
         # Descendants methods
         descendants_ids = function(path) {
             validate(path)
-            x <- match(path, "^%1$s%2$s\\w*(%2$s|$)")
-            x <- if (length(x) > 0) as.character(x) else NULL
+            x <- match(path, "^%1$s.*$")
+            x <- if (length(x) > 0) as.character(sort(x)) else NULL
             return(x)
         },
         descendants = function(...) data()[data()[[.path]] %in% descendants_ids(...), ],
-        has_descendants = function(path) !is.null(descendants_ids(path)),
+        has_descendants = function(path) unlist(sapply(path, function(x) !is.null(descendants_ids(x)))),
         
         # Children methods
         children_ids = function(path) {
             validate(path)
             x <- match(path, "^%1$s%2$s\\w*$") 
-            x <- if (length(x) > 0) as.character(x) else NULL
+            x <- if (length(x) > 0) as.character(sort(x)) else NULL
             return(x)
         },
         children = function(...) data()[data()[[.path]] %in% children_ids(...), ],
-        has_children = function(path) !is.null(children_ids(path)),
+        has_children = function(path) unlist(sapply(path, function(x) !is.null(children_ids(x)))),
         
         # End nodes (the last children of given nodes)
+        
+        # TODO : VECTORIZE VECTORIZE VECTORIZE !
+        #> a$endnodes_ids(x)
+        #[1] "1.1.1.1" "1.1.1.2" "1.1.1.3" "1.2.1.1" "1.2.1.2"
+        #Warning message:
+        #    In if (has_descendants(path)) { :
+        #    the condition has length > 1 and only the first element will be used
+        
         endnodes_ids = function(path) {
             if (has_descendants(path)) {
                 x <- descendants_ids(path)
@@ -87,8 +95,6 @@ path_enum <- setRefClass(
         
         # Node
         node = function(path) data()[data()[[.path]] %in% path, ]
-        
 
-        
     )
 )
