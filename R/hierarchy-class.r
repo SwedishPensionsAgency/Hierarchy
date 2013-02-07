@@ -13,7 +13,7 @@ path_enum <- setRefClass(
         
         # Get all data
         data = function() .data,
-
+        
         # Get and filter data by match
         match = function(path, re) {
             fun <- function(x) grep(sprintf(re, x, .sep), data()[[.path]])
@@ -31,7 +31,11 @@ path_enum <- setRefClass(
         # Find the position of the last seperator in path
         last_sep_position = function(path) max(gregexpr(.sep, path)[[1]]),
         
+        # Count occurences of a character in a string
+        tree_length = function() length(gregexpr(sprintf("[%s*]", .sep), data()[[.path]])[[1]]),
+        
         # Parent methods
+        # TODO: Add ancestors function, in the same way as descendants <-> children
         parent_id = function(path) {
             validate(path)
             x <- gsub(sprintf("(^|%s)\\w*$", .sep), "", path)
@@ -40,15 +44,12 @@ path_enum <- setRefClass(
         },
         parent = function(...) data()[data()[[.path]] %in% parent_id(...), ],
         has_parent = function(path) unlist(sapply(path, function(x) !is.null(parent_id(x)))),
-        
-        # Descendants methods
-        descendants_ids = function(path, deep = NULL) {
+
+        # Descendants methods (use "start" and "end" to define how deep it should go)
+        # TODO: Add option to include path in the return of function
+        descendants_ids = function(path, end = tree_length(), start = 1) {
             validate(path)
-            if (is.null(deep)) {
-                x <- match(path, "^%1$s.*$")
-            } else {
-                x <- match(path, paste("^%1$s.(\\d*.){1,", deep, "}$", sep = ""))  
-            }
+            x <- match(path, paste("^%1$s.(\\d*.){", start, ",", end, "}$", sep = ""))
             x <- if (length(x) > 0) as.character(sort(x)) else NULL
             return(x)
         },
@@ -56,12 +57,7 @@ path_enum <- setRefClass(
         has_descendants = function(path) unlist(sapply(path, function(x) !is.null(descendants_ids(x)))),
         
         # Children methods
-        children_ids = function(path) {
-            validate(path)
-            x <- match(path, "^%1$s%2$s\\w*$") 
-            x <- if (length(x) > 0) as.character(sort(x)) else NULL
-            return(x)
-        },
+        children_ids = function(path) descendants_ids(path, end = 1),
         children = function(...) data()[data()[[.path]] %in% children_ids(...), ],
         has_children = function(path) unlist(sapply(path, function(x) !is.null(children_ids(x)))),
         
