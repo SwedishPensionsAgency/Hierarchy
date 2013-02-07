@@ -2,16 +2,17 @@
 
 path_enum <- setRefClass(
     "path.enumeration",
-    fields = list(.data = "character", .path = "character", .sep = "character"),
+    fields = list(.data = "data.frame", .path = "character", .metrics = "character", .sep = "character"),
     methods = list(
-        initialize = function(data, path = colnames(data)[1], sep = "\\.") {
+        initialize = function(data, path = colnames(data)[1], metrics = NULL, sep = "\\.") {
             .path <<- path  # path has to be assigned before data
             .sep <<- sep
-            .data <<- deparse(substitute(data))
+            .data <<- data
+            .metrics <<- metrics
         },
         
         # Get all data
-        data = function() eval(parse(text = .data)),
+        data = function() .data,
 
         # Get and filter data by match
         match = function(path, re) {
@@ -60,7 +61,7 @@ path_enum <- setRefClass(
         children = function(...) data()[data()[[.path]] %in% children_ids(...), ],
         has_children = function(path) unlist(sapply(path, function(x) !is.null(children_ids(x)))),
         
-        # End nodes (the last children of given nodes)
+        # End nodes (the last children of gimven nodes)
         
         # TODO : VECTORIZE VECTORIZE VECTORIZE !
         #> a$endnodes_ids(x)
@@ -79,7 +80,7 @@ path_enum <- setRefClass(
             return(x)
         },
         endnodes = function(...) data()[data()[[.path]] %in% endnodes_ids(...), ],
-        endnodes_aggregate = function(x, metrics, fun) {
+        endnodes_aggregate = function(x, fun, metrics = .metrics) {
             if (length(metrics) > 1) {
                 y <- t(sapply(x, function(x) apply(subset(endnodes(x), select = metrics), 2, fun)))
             } else {
