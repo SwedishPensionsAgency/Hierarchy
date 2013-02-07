@@ -24,7 +24,7 @@ fun <- function(x, path, forman, year, deep) {
     tbl <- h$endnodes_aggregate(h$descendants_ids(path, deep), function(x) sum(x, na.rm = TRUE))
 }
 
-tbl <- do.call("rbind", lapply(c("Premiepension", "Inkomstpension"), function(i) fun(x, "3", i, 2011, 3)))
+tbl <- do.call("rbind", lapply(c("Premiepension", "Inkomstpension"), function(i) fun(x, "3", i, 2011, 2)))
 cast(tbl, ID + NAMN_SV ~ FORMAN_SV, sum)
 
 cast(fun(x, "1", "", 2011, 2), ID + NAMN_SV ~ FORMAN_SV, sum)
