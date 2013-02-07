@@ -14,16 +14,17 @@ x$YEAR <- as.integer(substring(x$YEAR, 2, 5))
 # For each table
 
 ## Selection
-fun <- function(x, path, forman, year) {
+fun <- function(x, path, forman, year, deep) {
     x <- x[x$FORMAN_SV %in% c(forman, "(...)") & x$YEAR == year, ]
     x$FORMAN_SV <- forman
     h <- path_enum$new(data = x, 
                        path = "ID",
                        metrics = "value")
     ## Aggregation
-    tbl <- h$endnodes_aggregate(h$descendants_ids(path), function(x) sum(x, na.rm = TRUE))
+    tbl <- h$endnodes_aggregate(h$descendants_ids(path, deep), function(x) sum(x, na.rm = TRUE))
 }
 
-tbl <- do.call("rbind", lapply(c("Premiepension", "Inkomstpension"), function(i) fun(x, "3", i, 2011)))
-
+tbl <- do.call("rbind", lapply(c("Premiepension", "Inkomstpension"), function(i) fun(x, "3", i, 2011, 3)))
 cast(tbl, ID + NAMN_SV ~ FORMAN_SV, sum)
+
+cast(fun(x, "1", "", 2011, 2), ID + NAMN_SV ~ FORMAN_SV, sum)

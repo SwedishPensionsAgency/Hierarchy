@@ -42,9 +42,13 @@ path_enum <- setRefClass(
         has_parent = function(path) unlist(sapply(path, function(x) !is.null(parent_id(x)))),
         
         # Descendants methods
-        descendants_ids = function(path) {
+        descendants_ids = function(path, deep = NULL) {
             validate(path)
-            x <- match(path, "^%1$s.*$")
+            if (is.null(deep)) {
+                x <- match(path, "^%1$s.*$")
+            } else {
+                x <- match(path, paste("^%1$s.(\\d*.){1,", deep, "}$", sep = ""))  
+            }
             x <- if (length(x) > 0) as.character(sort(x)) else NULL
             return(x)
         },
@@ -96,6 +100,5 @@ path_enum <- setRefClass(
         
         # Node
         node = function(path) data()[data()[[.path]] %in% path, ]
-
     )
 )
