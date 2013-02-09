@@ -13,7 +13,7 @@ p <- ggplot(x, aes(x = year, y = value, colour = country)) + geom_line()
 p <- p + geom_dl(aes(label=country), method=list("last.bumpup", cex=1), show_guide=FALSE) 
 p <- p + theme(
     legend.position="none",
-    plot.margin = unit(c(0, 4, 0, 0), "cm"),
+    plot.margin = unit(c(0, 4, 0, 0), "cm"),  # todo: auto-resize margin depending on name lengths
     panel.background = element_rect(fill='white', colour='white')
 )
 
