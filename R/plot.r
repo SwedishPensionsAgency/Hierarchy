@@ -4,10 +4,15 @@
 #' @import ggplot2
 my_theme <- function(right_margin = 4, ...) {
     theme(
+        axis.text = element_text(colour = "black"),
+        axis.title.x = element_text(vjust = -1),
+        axis.title.y = element_text(vjust = -0.25),
         legend.position = "none",
-        plot.margin = unit(c(0, right_margin, 0, 0), "cm"),  # todo: auto-resize margin depending on name lengths
+        plot.margin = unit(c(1, right_margin, 1, 1), "cm"),  # todo: auto-resize margin depending on name lengths
         panel.background = element_blank(),
         panel.grid.minor = element_blank(),
+        panel.grid.major.y = element_line(colour = "black", linetype = "dotted"),
+        axis.line = element_line(colour = "black"),
         ...
     )
 }
@@ -30,7 +35,12 @@ fix_labels <- function(p) {
 #' @param theme ggplot theme
 #' @import ggplot2, directlabels
 #' @export
-line_plot <- function(..., dl_method = "last.bumpup", cex = 1, theme = my_theme()) {
-    p <- ggplot(...) + geom_line() + geom_dl(method = list(dl_method, cex = cex)) + theme
+line_plot <- function(data, x, y, group, size = 2, dl_method = "last.bumpup", cex = 1, theme = my_theme()) {
+    x <- data.frame(x = data[[x]], y = data[[y]], group = data[[group]])
+    p <- ggplot(data = x, aes(x = x, y = y, color = group, label = group)) +
+         geom_line(size = size) +
+         geom_dl(method = list(dl_method, cex = cex)) +
+         coord_cartesian(xlim = c(min(x$x), max(x$x)), ylim = c(min(x$y), max(x$y))) +
+         theme
     fix_labels(p)
 }
