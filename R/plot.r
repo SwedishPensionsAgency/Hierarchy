@@ -35,12 +35,14 @@ fix_labels <- function(p) {
 #' @param theme ggplot theme
 #' @import ggplot2, directlabels
 #' @export
-line_plot <- function(data, x, y, group, size = 2, dl_method = "last.bumpup", cex = 1, theme = my_theme()) {
+line_plot <- function(data, x, y, group, xlab = "x", ylab = "y", size = 2, dl_method = "last.bumpup", cex = 1, theme = my_theme()) {
     x <- data.frame(x = data[[x]], y = data[[y]], group = data[[group]])
     p <- ggplot(data = x, aes(x = x, y = y, color = group, label = group)) +
          geom_line(size = size) +
          geom_dl(method = list(dl_method, cex = cex)) +
          coord_cartesian(xlim = c(min(x$x), max(x$x)), ylim = c(min(x$y), max(x$y))) +
+         xlab(xlab) + 
+         ylab(ylab) +
          theme
     fix_labels(p)
 }
