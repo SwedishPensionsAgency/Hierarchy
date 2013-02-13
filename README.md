@@ -1,7 +1,7 @@
 Hierarchy
 =========
 
- ***Package is under heavy development***
+ *** Work in progress ***
 
 The Hierarchy package aims to simplify the work with hierarchical data structures in R. 
 It is inspired by [Ancestry](https://github.com/stefankroes/ancestry) - a Ruby and Rails gem/plugin by Stefan Henzen.
@@ -36,12 +36,38 @@ Let's say that we have a data frame `cpi` of the following structure:
 
 Then we define the hierarchical structure to be a path enumeration 
 
-    a <- path_enum$new(cpi)
-
-And thus, calculate the aggregate sum of all endnodes, given a specific path id:
-
-    a$endnodes_aggregate("1.1", c("weight", "consumption"), sum)
+    a <- Hierarchy:::path_enum$new(cpi, metrics = c("weight", "consumption"))
     
+#### Examples of method calls
+
+Get node from id
+
+    a$node("1.1")
+
+Check if it has a parent
+
+    a$has_parent("1.1")
+
+Get children ids
+
+    a$children_ids("1.1")
+
+Get children
+
+    a$children("1.1")
+
+Get all descendants
+
+    a$descendants("1.1")
+
+Get endnodes (the end points of the subtree)
+
+    a$endnodes("1.1")
+    
+Sum of endnodes:
+
+    a$aggregate("1.1", function(x) sum(x, na.rm = TRUE))
+
     id      name                weight    consumption
     1.1     Inventarier         6.59      65000
 

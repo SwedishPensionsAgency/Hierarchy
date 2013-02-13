@@ -24,9 +24,7 @@ a$has_children(x)
 a$parent_id(x)
 a$parent(x)
 a$has_parent(x)
-
-a$endnodes_ids("1.1")
-a$endnodes("1.1")
-
-a$endnodes_aggregate("1.1", c("weight"), function(x) sum(x, na.rm = TRUE))
-a$endnodes_aggregate("1.1", c("consumption", "weight"), function(x) mean(x, na.rm = TRUE))
+a$endnodes_ids(x)
+a$endnodes(x)
+a$aggregate(x, function(x) sum(x, na.rm = TRUE))
+a$aggregate(x, function(x) mean(x, na.rm = TRUE))

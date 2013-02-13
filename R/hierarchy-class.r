@@ -79,7 +79,9 @@ path_enum <- setRefClass(
             return(x)
         },
         endnodes = function(...) data()[data()[[.path]] %in% endnodes_ids(...), ],
-        endnodes_aggregate = function(x, fun, metrics = .metrics) {
+        
+        # Aggregate endnodes of given x paths
+        aggregate = function(x, fun, metrics = .metrics) {
             if (length(metrics) > 1) {
                 y <- t(sapply(x, function(x) apply(subset(endnodes(x), select = metrics), 2, fun)))
             } else {
