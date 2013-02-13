@@ -1,7 +1,6 @@
 #' Customized plot theme
 #' 
 #' @param p ggplot object
-#' @import ggplot2
 my_theme <- function(right_margin = 4, ...) {
     theme(
         axis.text = element_text(colour = "black"),
@@ -20,7 +19,6 @@ my_theme <- function(right_margin = 4, ...) {
 #' Fix labels
 #' 
 #' @param p ggplot object
-#' @import ggplot2
 fix_labels <- function(p) {
     p <- ggplot_gtable(ggplot_build(p))
     p$layout$clip[p$layout$name=="panel"] <- "off"
@@ -33,7 +31,6 @@ fix_labels <- function(p) {
 #' @param dl_method directlabels method
 #' @param cex directlabels cex argument (font size)
 #' @param theme ggplot theme
-#' @import ggplot2 directlabels
 #' @export
 line_plot <- function(data, x, y, group, xlab = "x", ylab = "y", size = 2, dl_method = "last.bumpup", cex = 1, theme = my_theme()) {
     x <- data.frame(x = data[[x]], y = data[[y]], group = data[[group]])
