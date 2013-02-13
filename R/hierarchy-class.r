@@ -31,7 +31,7 @@ path_enum <- setRefClass(
         last_sep_position = function(path) max(gregexpr(.sep, path)[[1]]),
         
         # Count occurences of a character in a string
-        tree_length = function() length(gregexpr(sprintf("[%s*]", .sep), data()[[.path]])[[1]]),
+        tree_length = function() max(sapply(gregexpr(sprintf("[%s*]", .sep), data()[[.path]]), length)),
         
         # Parent methods
         # TODO: Add ancestors function, in the same way as descendants <-> children

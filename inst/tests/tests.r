@@ -8,25 +8,25 @@ kpi <- structure(list(
     weight = c(NA, NA, NA, 1.48, 2.9, 2.21, NA, NA, 0.98, 3.03), 
     consumption = c(NA, NA, NA, 40000L, 20000L, 5000L, NA, NA, 10000L, 12000L)), .Names = c("id", "name", "year", "month", "weight", "consumption"), class = "data.frame", row.names = c(NA, -10L))
 
-a <- path_enum$new(kpi)
+# Define path_enum
+a <- Hierarchy:::path_enum$new(kpi, metrics = c("weight", "consumption"))
+
+# Get data
 a$data()
 
-x <- c("1.1", "1")
-
+x <- c("1", "1.1")
 a$descendants_ids(x)
 a$descendants(x)
 a$has_descendants(x)
-
 a$children_ids(x)
 a$children(x)
 a$has_children(x)
-
 a$parent_id(x)
 a$parent(x)
 a$has_parent(x)
 
-a$endnodes_ids(x)
-a$endnodes(x)
+a$endnodes_ids("1.1")
+a$endnodes("1.1")
 
 a$endnodes_aggregate("1.1", c("weight"), function(x) sum(x, na.rm = TRUE))
 a$endnodes_aggregate("1.1", c("consumption", "weight"), function(x) mean(x, na.rm = TRUE))
