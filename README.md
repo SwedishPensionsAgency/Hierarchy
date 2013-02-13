@@ -68,8 +68,8 @@ Sum of endnodes:
 
     a$aggregate("1.1", function(x) sum(x, na.rm = TRUE))
 
-    id      name                weight    consumption
-    1.1     Inventarier         6.59      65000
+    # id      name                weight    consumption
+    # 1.1     Inventarier         6.59      65000
 
 
 ## Development
