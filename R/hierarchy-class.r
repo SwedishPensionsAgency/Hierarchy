@@ -1,5 +1,4 @@
-# Path Enumeration
-
+#' Path enumeration class
 path_enum <- setRefClass(
     "path.enumeration",
     fields = list(.data = "data.frame", .path = "character", .metrics = "character", .sep = "character"),
