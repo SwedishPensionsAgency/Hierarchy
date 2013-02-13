@@ -33,7 +33,7 @@ fix_labels <- function(p) {
 #' @param dl_method directlabels method
 #' @param cex directlabels cex argument (font size)
 #' @param theme ggplot theme
-#' @import ggplot2, directlabels
+#' @import ggplot2 directlabels
 #' @export
 line_plot <- function(data, x, y, group, xlab = "x", ylab = "y", size = 2, dl_method = "last.bumpup", cex = 1, theme = my_theme()) {
     x <- data.frame(x = data[[x]], y = data[[y]], group = data[[group]])
