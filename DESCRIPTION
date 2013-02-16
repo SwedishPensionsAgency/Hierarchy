@@ -8,7 +8,7 @@ Author: Thomas Reinholdsson
 Maintainer: Thomas Reinholdsson <reinholdsson@gmail.com>
 Description: Hierarchy supports path enumeration calculations on data frames.
 License: AGPLv3
-Dependecies: ggplot2, directlabels
+Dependecies: ggplot2, directlabels, plyr
 Collate:
     'hierarchy-class.r'
     'plot.r'
