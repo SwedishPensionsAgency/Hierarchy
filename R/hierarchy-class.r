@@ -96,6 +96,22 @@ path_enum <- setRefClass(
         },
         
         # Node
-        node = function(path) data()[data()[[.path]] %in% path, ]
+        node = function(path) data()[data()[[.path]] %in% path, ],
+        
+        # Get tree as JSON character string
+        to_json = function(path) {
+
+            node_df <- node(path)
+            intent <- paste(rep("  ", count_char_occ(path, .sep)), collapse = "")
+            
+            res <- paste(
+                sprintf("\n%1$s{\n", intent),
+                paste(sapply(colnames(node_df), function(x) sprintf("%1$s\"%2$s\" : \"%3$s\"", intent, x, node_df[[x]])), collapse = ",\n"),
+                if(has_children(path)) sprintf(",\n%1$s\"children\" : [%2$s\n%1$s]", intent, paste(sapply(children_ids(path), to_json), collapse = ",")) else "",
+                sprintf("\n%1$s}", intent),
+                sep = "")
+            
+            return(res)
+        }
     )
 )

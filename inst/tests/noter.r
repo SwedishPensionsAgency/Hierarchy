@@ -29,27 +29,8 @@ cast(combo, Label_en ~ forman_ar, sum)
 
 
 ### TO JSON ###
-
-data <- x
-data$ndims <- sapply(gregexpr(sprintf("[^%s*]", "\\."), data$Id), length) - 1
-
-
-",\"children\":["
-
-
-require(RJSONIO)
-makeList<-function(x){
-    if(ncol(x)>3){
-        listSplit<-split(x[-1],x[1],drop=T)
-        lapply(names(listSplit),function(y){list(name=y,children=makeList(listSplit[[y]]))})
-    }else{
-        lapply(seq(nrow(x[1])),function(y){list(name=x[,1][y],value=x[,2][y],weight=x[,3][y])})
-    }
-}
-
-jsonOut<-toJSON(list(name="MyData",children=makeList(x)))
-sink("cpi.json")
-cat(jsonOut)
-sink()
+a <- Hierarchy:::path_enum$new(data = subset(x, variable == "Y2011"), path = "Id", metrics = "value")
+test <- a$to_json("1.1.1")
+cat(test)
 
 
