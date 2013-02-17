@@ -10,13 +10,14 @@ path_enum <- setRefClass(
             .metrics <<- metrics
         },
         
-        # Get all data
-        data = function() .data,
-        
-        # Subset data
-        subset = function(...){
-            .data <<- base:::subset(...) 
-            },
+        # Get data and/or subset data (replaces data in path.enum object)
+        data = function(..., x = .data){
+                if (is.vector(x)) {
+                    .data <<- base:::subset(x = node(x), ...)
+                } else {
+                    .data <<- base:::subset(x = x, ...)
+                }
+        },
         
         # Get and filter data by match
         match = function(path, re) {
@@ -86,7 +87,7 @@ path_enum <- setRefClass(
         endnodes = function(...) data()[data()[[.path]] %in% endnodes_ids(...), ],
         
         # Aggregate endnodes of given x paths
-        aggregate = function(x, fun, metrics = .metrics) {
+        aggregate = function(x = node_ids(), fun = function(x) sum(x, na.rm = TRUE), metrics = .metrics) {
             if (length(metrics) > 1) {
                 y <- t(sapply(x, function(x) apply(subset(endnodes(x), select = metrics), 2, fun)))
             } else {
@@ -101,7 +102,8 @@ path_enum <- setRefClass(
         },
         
         # Node
-        node = function(path) data()[data()[[.path]] %in% path, ],
+        node_ids = function() data()[[.path]],
+        node = function(path) data()[node_ids() %in% path, ],
         
         # Get tree as JSON character string
         to_json = function(path) {

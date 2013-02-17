@@ -26,16 +26,8 @@ combo <- rbind(ip, pp)
 combo$forman_ar <- paste(combo$forman, combo$variable)
 cast(combo, Label_en ~ forman_ar, sum)
 
-
-### SUBSET ###
-
+### Example 3: subset & to_json ###
 a <- Hierarchy:::path_enum$new(data = x, metrics = c("value"))
-
-
-### TO JSON ###
-df <- subset(x, variable == "Y2011", select = c("Id", "Label_en", "value"))
-colnames(df) <- c("id", "name", "value")
-df$weight <- df$value
-a <- Hierarchy:::path_enum$new(data = df, metrics = c("value", "weight"))
-test <- a$to_json("1.1.1.2.2.1.4.2")
-cat(test)
+a$data(x = a$aggregate(), variable == "Y2011", select = c("Id", "Label_en", "value"))
+head(a$data())
+cat(a$to_json("1.1.1.2"))
