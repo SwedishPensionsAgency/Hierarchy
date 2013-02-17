@@ -27,6 +27,10 @@ combo$forman_ar <- paste(combo$forman, combo$variable)
 cast(combo, Label_en ~ forman_ar, sum)
 
 
+### SUBSET ###
+
+a <- Hierarchy:::path_enum$new(data = x, metrics = c("value"))
+
 
 ### TO JSON ###
 df <- subset(x, variable == "Y2011", select = c("Id", "Label_en", "value"))

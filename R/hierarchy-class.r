@@ -13,6 +13,11 @@ path_enum <- setRefClass(
         # Get all data
         data = function() .data,
         
+        # Subset data
+        subset = function(...){
+            .data <<- base:::subset(...) 
+            },
+        
         # Get and filter data by match
         match = function(path, re) {
             fun <- function(x) grep(sprintf(re, x, .sep), data()[[.path]])
