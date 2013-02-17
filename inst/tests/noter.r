@@ -34,8 +34,7 @@ data <- x
 data$ndims <- sapply(gregexpr(sprintf("[^%s*]", "\\."), data$Id), length) - 1
 
 
-
-
+",\"children\":["
 
 
 require(RJSONIO)

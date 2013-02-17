@@ -31,7 +31,7 @@ path_enum <- setRefClass(
         last_sep_position = function(path) max(gregexpr(.sep, path)[[1]]),
         
         # Count occurences of a character in a string
-        tree_length = function(str, chr) sapply(gregexpr(sprintf("[^%s*]", chr), str), length) - 1,
+        count_char_occ = function(str, chr) sapply(gregexpr(sprintf("[^%s*]", chr), str), length) - 1,
         
         # Parent methods
         # TODO: Add ancestors function, in the same way as descendants <-> children
@@ -46,7 +46,7 @@ path_enum <- setRefClass(
 
         # Descendants methods (use "start" and "end" to define how deep it should go)
         # TODO: Add option to include path in the return of function
-        descendants_ids = function(path, end = max(tree_length(data()[[.path]], .sep)), start = 1) {
+        descendants_ids = function(path, end = max(count_char_occ(data()[[.path]], .sep)), start = 1) {
             validate(path)
             x <- match(path, paste("^%1$s.(\\d*.){", start, ",", end, "}$", sep = ""))
             x <- if (length(x) > 0) as.character(sort(x)) else NULL
