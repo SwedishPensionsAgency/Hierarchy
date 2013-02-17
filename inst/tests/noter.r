@@ -29,8 +29,9 @@ cast(combo, Label_en ~ forman_ar, sum)
 
 
 ### TO JSON ###
-a <- Hierarchy:::path_enum$new(data = subset(x, variable == "Y2011"), path = "Id", metrics = "value")
-test <- a$to_json("1.1.1")
+df <- subset(x, variable == "Y2011", select = c("Id", "Label_en", "value"))
+colnames(df) <- c("id", "name", "value")
+df$weight <- df$value
+a <- Hierarchy:::path_enum$new(data = df, metrics = c("value", "weight"))
+test <- a$to_json("1.1.1.2.2.1.4.2")
 cat(test)
-
-

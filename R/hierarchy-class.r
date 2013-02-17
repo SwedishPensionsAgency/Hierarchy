@@ -106,7 +106,16 @@ path_enum <- setRefClass(
             
             res <- paste(
                 sprintf("\n%1$s{\n", intent),
-                paste(sapply(colnames(node_df), function(x) sprintf("%1$s\"%2$s\" : \"%3$s\"", intent, x, node_df[[x]])), collapse = ",\n"),
+                paste(sapply(colnames(node_df), function(x, na = na) {
+                        if(is.numeric(node_df[[x]])) {
+                            qte <- ""
+                            node_df[[x]][is.na(node_df[[x]])] <- 0  # replace NA with 0
+                        } else {
+                            qte <- "\""
+                        }
+                        
+                        sprintf("%1$s\"%2$s\" : %3$s%4$s%3$s", intent, x, qte, node_df[[x]])
+                    }), collapse = ",\n"),
                 if(has_children(path)) sprintf(",\n%1$s\"children\" : [%2$s\n%1$s]", intent, paste(sapply(children_ids(path), to_json), collapse = ",")) else "",
                 sprintf("\n%1$s}", intent),
                 sep = "")
