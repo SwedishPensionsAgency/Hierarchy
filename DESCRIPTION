@@ -3,12 +3,12 @@ Type: Package
 Title: The Hierarchy package aims to simplify the work with hierarchical data
     structures in R.
 Version: 0.9
-Date: 2013-02-03
+Date: 2013-03-06
 Author: Thomas Reinholdsson
 Maintainer: Thomas Reinholdsson <reinholdsson@gmail.com>
 Description: Hierarchy supports path enumeration calculations on data frames.
 License: AGPLv3
-Dependecies: ggplot2, directlabels, plyr
+Dependecies: plyr, reshape2
 Collate:
-    'hierarchy-class.r'
-    'plot.r'
+    'aggr-nodes.r'
+    'path-enum-class.r'

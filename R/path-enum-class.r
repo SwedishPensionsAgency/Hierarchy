@@ -51,11 +51,13 @@ path_enum <- setRefClass(
         has_parent = function(path) unlist(sapply(path, function(x) !is.null(parent_id(x)))),
 
         # Descendants methods (use "start" and "end" to define how deep it should go)
-        # TODO: Add option to include path in the return of function
-        descendants_ids = function(path, end = max(count_char_occ(data()[[.path]], .sep)), start = 1) {
+        descendants_ids = function(path, end = max(count_char_occ(data()[[.path]], .sep)), start = 1, include = FALSE) {
             validate(path)
             x <- match(path, paste("^%1$s.(\\d*.){", start, ",", end, "}$", sep = ""))
             x <- if (length(x) > 0) as.character(sort(x)) else NULL
+            
+            if (include) x <- c(path, x)
+            
             return(x)
         },
         descendants = function(...) data()[data()[[.path]] %in% descendants_ids(...), ],
