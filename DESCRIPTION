@@ -12,3 +12,5 @@ Dependecies: plyr, reshape2
 Collate:
     'aggr-nodes.r'
     'path-enum-class.r'
+    'count-occ.r'
+    'id-to-levels.r'
