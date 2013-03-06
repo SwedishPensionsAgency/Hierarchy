@@ -58,6 +58,8 @@ path_enum <- setRefClass(
             
             if (include) x <- c(path, x)
             
+            x <- unique(x)  # temporary fix to bug (TODO: improve)
+            
             return(x)
         },
         descendants = function(...) data()[data()[[.path]] %in% descendants_ids(...), ],
