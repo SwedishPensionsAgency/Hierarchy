@@ -20,9 +20,8 @@ aggr_by <- function(data, path = colnames(data)[1],
                     metrics = "value", 
                     ids = "1", 
                     by = "variable", ..., 
-                    fun = function(x) sum(x, na.rm = TRUE,
-                    to_levels = FALSE
-                    )) {
+                    fun = function(x) sum(x, na.rm = TRUE),
+                    to_levels = FALSE) {
     res <- ddply(data, by, function(x) {
         a <- Hierarchy:::path_enum$new(data = x, path = path, metrics = metrics)
         a$aggregate(a$descendants_ids(ids, ...), fun)
