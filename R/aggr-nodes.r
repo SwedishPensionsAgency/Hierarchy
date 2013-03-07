@@ -27,7 +27,7 @@ aggr_by <- function(data, path = colnames(data)[1],
         a$aggregate(a$descendants_ids(ids, ...), fun)
     })
 
-    if (to_levels) res[[path]] <- count_occ(res[[path]])
+    if (to_levels) res[[path]] <- id_to_levels(res[[path]])
 
     return(res)
 }
