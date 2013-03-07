@@ -35,7 +35,7 @@ aggr_by <- function(data, path = colnames(data)[1],
 
 # Aggregate by child
 
-aggr_by_child <- function(data, path = colnames(data)[1], metrics = "value", label, ids = "1", include = FALSE, fun = function(x) sum(x, na.rm = TRUE)) {
+aggr_by_child <- function(data, path = colnames(data)[1], metrics = "value", label, ids = "1", include = FALSE, fun = function(x) sum(x, na.rm = TRUE), to_levels = FALSE) {
 
   a <- Hierarchy:::path_enum$new(data = data, path = path, metrics = metrics)
   ch <- a$children_ids(ids)
@@ -58,6 +58,8 @@ aggr_by_child <- function(data, path = colnames(data)[1], metrics = "value", lab
     .sep <- "\\."  # TODO: Improve
     escaped_ids <- gsub("\\.", "\\\\.", ids)  # TODO: Improve
     df[['Id']] <- gsub(sprintf("(^%1$s%2$s)(\\w+)(.*$)", escaped_ids, .sep),"\\1*\\3", df[['Id']])
+    
+    if (to_levels) df[[path]] <- id_to_levels(df[[path]])
 
     return(df)
   }))
