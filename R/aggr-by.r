@@ -56,7 +56,7 @@ aggr_by <- function(data,
       }))
     }
     
-    if (is.null(by)) {
+    if (is.null(dims)) {
         res <- aggr_each(data)
     } else {
     res <- ddply(data, dims, function(x) {
@@ -80,5 +80,5 @@ aggr_by <- function(data,
 # require(reshape2)
 # x <- read.table("data/notes.tab", sep = "\t", header = TRUE)
 # x <- melt(x)
-# test <- aggr_by(x, ids = "2.1.1", path = "Id", dims = c("variable"), metrics = c("value"), include = FALSE, end = 2, label = "Label", by_child = FALSE)
+# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, label = "Label", by_child = FALSE)
 # head(test)
