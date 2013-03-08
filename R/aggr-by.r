@@ -17,16 +17,15 @@
 #' Return column "root" will contain the (first) label of the children.
 #' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
-#' @examples 
-#' NULL
-# require(Hierarchy)
-# require(plyr)
-# require(reshape2)
-# x <- read.table("data/notes.tab", sep = "\t", header = TRUE)
-# x <- melt(x)
-# ex1 <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE, id_format = "stars")
-# ex2 <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = TRUE, end = 1, by_child = TRUE, id_format = "stars")
-# ex3 <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = TRUE, end = 2, labels = "Label", by_child = TRUE, id_format = "levels")
+#' @import plyr
+#' @import reshape2
+#' 
+#' @examples
+#' \dontrun{
+#' aggr_by(melt(notes), ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE, id_format = "stars")
+#' aggr_by(melt(notes), ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = TRUE, end = 1, by_child = TRUE, id_format = "stars")
+#' aggr_by(melt(notes), ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = TRUE, end = 2, labels = "Label", by_child = TRUE, id_format = "levels")
+#' }
 #' 
 #' @export
 aggr_by <- function(data,

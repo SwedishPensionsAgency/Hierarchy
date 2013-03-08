@@ -8,7 +8,9 @@ Author: Thomas Reinholdsson
 Maintainer: Thomas Reinholdsson <reinholdsson@gmail.com>
 Description: Hierarchy supports path enumeration calculations on data frames.
 License: AGPLv3
-Dependecies: plyr, reshape2
+Imports:
+    plyr,
+    reshape2
 Collate:
     'path-enum-class.r'
     'count-occ.r'
