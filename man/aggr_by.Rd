@@ -2,19 +2,19 @@
 \alias{aggr_by}
 \title{Aggregate by variable and/or children}
 \usage{
-  aggr_by(data, path = colnames(data)[1], label,
-    dims = NULL, metrics = "value", ids = "1",
-    include = FALSE,
+  aggr_by(data, path = colnames(data)[1],
+    labels = colnames(data)[2], dims = NULL,
+    metrics = "value", ids = "1", include = FALSE,
     fun = function(x) sum(x, na.rm = TRUE),
-    to_levels = FALSE, by_child = FALSE, ...)
+    id_format = "none", by_child = FALSE, ...)
 }
 \arguments{
   \item{data}{data frame}
 
   \item{path}{column with path enumeration ids}
 
-  \item{label}{label column (description of the variable);
-  required.}
+  \item{labels}{label columns (description of the
+  variable).}
 
   \item{dims}{dimension columns}
 
@@ -28,11 +28,12 @@
   \item{fun}{function to be used in metric calculations
   (e.g. sum)}
 
-  \item{to_levels}{if ids should be converted to levels}
+  \item{id_format}{format of ids to "levels" or "stars";
+  default = "none".}
 
   \item{by_child}{if all calculations should be done on the
   children of the id node. Return column "root" will
-  contain the label of the children.}
+  contain the (first) label of the children.}
 
   \item{...}{arguments passed to the descendants_ids()
   function; start = where to start in the subtree, end =
