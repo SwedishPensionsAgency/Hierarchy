@@ -13,27 +13,31 @@
 #' @param to_levels if to convert ids to levels
 #' 
 #' @examples 
-#' # aggr_by_var(melt(notes), ids = "1.1.1.2.2", end = 2, include = TRUE)
+#' # aggr_by_(melt(notes), ids = "1.1.1.2.2", end = 2, include = TRUE)
 #' 
 #' @export
 aggr_by <- function(data,
                           ids = "1",
                           path = colnames(data)[1], 
                           metrics = "value",
-                          by = "variable",
+                          dims = "variable",
                           include = FALSE,
                           fun = function(x) sum(x, na.rm = TRUE), 
                           to_levels = FALSE,
                           label = colnames(data)[1],
-                          child = FALSE,
+                          by_child = FALSE,
                           ...) {
 
-    
-        #browser()
+    # Only keep variables of interest and aggregate on those
+    by <- c(path, label, dims)
+    data <- subset(data, select = c(by, metrics))
+    data <- ddply(data, by, colwise(fun))
+
+    # Define aggr function
     aggr_each <- function(x) {
       a <- Hierarchy:::path_enum$new(data = x, path = path, metrics = metrics)
       
-      if (child) {
+      if (by_child) {
         ids <- a$children_ids(ids)
       }
     
@@ -55,7 +59,7 @@ aggr_by <- function(data,
     if (is.null(by)) {
         res <- aggr_each(data)
     } else {
-    res <- ddply(data, by, function(x) {
+    res <- ddply(data, dims, function(x) {
         aggr_each(x)
     })
     }
@@ -76,5 +80,5 @@ aggr_by <- function(data,
 # require(reshape2)
 # x <- read.table("data/notes.tab", sep = "\t", header = TRUE)
 # x <- melt(x)
-# test <- aggr_by_child(x, ids = "2.1.1", path = "Id", by = "Id", include = FALSE, end = 2)
+# test <- aggr_by(x, ids = "2.1.1", path = "Id", dims = c("variable"), metrics = c("value"), include = FALSE, end = 2, label = "Label", by_child = FALSE)
 # head(test)
