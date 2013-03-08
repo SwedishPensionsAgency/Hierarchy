@@ -46,7 +46,7 @@ aggr_by <- function(data,
         if (is.null(ds)) ds <- x
     
         df <- a$aggregate(ds, fun)
-        if (include) df[df$label == a$node(x)[1, ][[label]], ][1, ][[label]] <- "(all)"
+        #if (include) df[df$label == a$node(x)[1, ][[label]], ][1, ][[label]] <- "(all)"
     
         df$root <- a$node(x)[1, ][[label]]
     
@@ -80,5 +80,7 @@ aggr_by <- function(data,
 # require(reshape2)
 # x <- read.table("data/notes.tab", sep = "\t", header = TRUE)
 # x <- melt(x)
-# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, label = "Label", by_child = FALSE)
+# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", label = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE)
+# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", label = "Label", dims = c("variable"), metrics = c("value"), include = TRUE, end = 1, by_child = TRUE)
+# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = TRUE, end = 2, label = "Label", by_child = TRUE, to_levels = TRUE)
 # head(test)
