@@ -4,7 +4,8 @@
 \usage{
   aggr_by(data, path = colnames(data)[1],
     metrics = "value", ids = "1", by = "variable", ...,
-    fun = function(x) sum(x, na.rm = TRUE))
+    fun = function(x) sum(x, na.rm = TRUE),
+    to_levels = FALSE)
 }
 \arguments{
   \item{data}{data frame}
@@ -20,6 +21,8 @@
   \item{fun}{aggregate function (e.g. sum)}
 
   \item{...}{arguments passed to descendants_ids()}
+
+  \item{to_levels}{if to convert ids to levels}
 }
 \description{
   A wrapper function to the path enumeration class to
