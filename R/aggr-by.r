@@ -1,6 +1,7 @@
-#' Aggregate by variable and/or children
+#' Aggregate nodes
 #' 
-#' A wrapper function to the path enumeration class to aggregate nodes.
+#' A wrapper function to the path enumeration class, 
+#' that is used to aggregate nodes by dimensions and/or children. 
 #' The hierarchical data set must have a path enumerated column.
 #' 
 #' @param data data frame

@@ -1,6 +1,6 @@
 \name{aggr_by}
 \alias{aggr_by}
-\title{Aggregate by variable and/or children}
+\title{Aggregate nodes}
 \usage{
   aggr_by(data, path = colnames(data)[1],
     labels = colnames(data)[2], dims = NULL,
@@ -40,9 +40,10 @@
   where to end in the subtree.}
 }
 \description{
-  A wrapper function to the path enumeration class to
-  aggregate nodes. The hierarchical data set must have a
-  path enumerated column.
+  A wrapper function to the path enumeration class, that is
+  used to aggregate nodes by dimensions and/or children.
+  The hierarchical data set must have a path enumerated
+  column.
 }
 \examples{
 NULL
