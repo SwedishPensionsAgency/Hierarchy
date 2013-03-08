@@ -5,28 +5,40 @@
 #' 
 #' @param data data frame
 #' @param path column with path enumeration ids
+#' @param label label column (description of the variable); required.
+#' @param dims dimension columns
 #' @param metrics metric columns
 #' @param ids node id (e.g. "1.2.1.3")
-#' @param by column to aggregate by
-#' @param fun aggregate function (e.g. sum)
-#' @param ... arguments passed to descendants_ids()
-#' @param to_levels if to convert ids to levels
+#' @param include if the node itself should be returned as a row
+#' @param fun function to be used in metric calculations (e.g. sum)
+#' @param to_levels if ids should be converted to levels
+#' @param by_child if all calculations should be done on the children of the id node.
+#' Return column "root" will contain the label of the children.
+#' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
 #' @examples 
-#' # aggr_by_(melt(notes), ids = "1.1.1.2.2", end = 2, include = TRUE)
+#' NULL
+# require(Hierarchy)
+# require(plyr)
+# require(reshape2)
+# x <- read.table("data/notes.tab", sep = "\t", header = TRUE)
+# x <- melt(x)
+# ex1 <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", label = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE)
+# ex2 <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", label = "Label", dims = c("variable"), metrics = c("value"), include = TRUE, end = 1, by_child = TRUE)
+# ex3 <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = TRUE, end = 2, label = "Label", by_child = TRUE, to_levels = TRUE)
 #' 
 #' @export
 aggr_by <- function(data,
-                          ids = "1",
-                          path = colnames(data)[1], 
-                          metrics = "value",
-                          dims = "variable",
-                          include = FALSE,
-                          fun = function(x) sum(x, na.rm = TRUE), 
-                          to_levels = FALSE,
-                          label = colnames(data)[1],
-                          by_child = FALSE,
-                          ...) {
+                    path = colnames(data)[1],
+                    label,
+                    dims = NULL,
+                    metrics = "value",
+                    ids = "1",
+                    include = FALSE,
+                    fun = function(x) sum(x, na.rm = TRUE), 
+                    to_levels = FALSE,
+                    by_child = FALSE,
+                    ...) {
 
     # Only keep variables of interest and aggregate on those
     by <- c(path, label, dims)
@@ -73,14 +85,3 @@ aggr_by <- function(data,
     
     return(res)
 }
-
-### Example
-# require(Hierarchy)
-# require(plyr)
-# require(reshape2)
-# x <- read.table("data/notes.tab", sep = "\t", header = TRUE)
-# x <- melt(x)
-# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", label = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE)
-# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", label = "Label", dims = c("variable"), metrics = c("value"), include = TRUE, end = 1, by_child = TRUE)
-# test <- aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = TRUE, end = 2, label = "Label", by_child = TRUE, to_levels = TRUE)
-# head(test)
