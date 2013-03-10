@@ -16,3 +16,4 @@ Collate:
     'count-occ.r'
     'id-to-levels.r'
     'aggr-by.r'
+    'Hierarchy.r'

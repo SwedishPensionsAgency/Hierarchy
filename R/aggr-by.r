@@ -17,9 +17,6 @@
 #' Return column "root" will contain the (first) label of the children.
 #' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
-#' @import plyr
-#' @import reshape2
-#' 
 #' @examples
 #' \dontrun{
 #' aggr_by(melt(notes), ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE, id_format = "stars")
