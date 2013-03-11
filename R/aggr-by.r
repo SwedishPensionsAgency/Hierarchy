@@ -55,6 +55,8 @@ aggr_by <- function(data,
         if (is.null(ds)) ds <- x
     
         df <- a$aggregate(ds, fun)
+
+        if (id_format == "stars") df[df$label == a$node(x)[1,][[labels[1]]], ][1, ][[labels[1]]] <- "(all)" # replace label for first row if id_label == "stars"
         df$root <- a$node(x)[1, ][[labels[1]]]  # obs: the first label in labels is used
 
         return(df)
