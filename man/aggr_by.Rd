@@ -51,9 +51,10 @@
 }
 \examples{
 \dontrun{
-aggr_by(melt(notes), ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE, id_format = "stars")
-aggr_by(melt(notes), ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = TRUE, end = 1, by_child = TRUE, id_format = "stars")
-aggr_by(melt(notes), ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = TRUE, end = 2, labels = "Label", by_child = TRUE, id_format = "levels")
+x <- melt(notes)
+aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 1, by_child = FALSE, id_format = "stars")
+aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = TRUE, end = 1, by_child = TRUE, id_format = "stars")
+aggr_by(x, ids = "1.1.1.2.2.1.3.1", path = "Id", dims = c("variable"), metrics = c("value"), include = TRUE, end = 2, labels = "Label", by_child = TRUE, id_format = "levels")
 }
 }
 
