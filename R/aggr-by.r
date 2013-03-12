@@ -39,10 +39,8 @@ aggr_by <- function(data,
                     grand_label = "(all)",
                     ...) {
 
-    # Only keep variables of interest and aggregate on those
-    by <- c(path, labels, dims)
-    data <- subset(data, select = c(by, metrics))
-    data <- ddply(data, by, colwise(fun))
+    # Only select/keep variables of interest
+    data <- subset(data, select = c(path, labels, dims, metrics))
 
     # Define aggr function
     aggr_each <- function(x) {
@@ -75,19 +73,19 @@ aggr_by <- function(data,
     if (is.null(dims)) {
         res <- aggr_each(data)
     } else {
-    res <- ddply(data, dims, function(x) {
-        aggr_each(x)
-    })
+        res <- ddply(data, dims, function(x) {
+            aggr_each(x)
+        })
     }
 
-    # Replace part of id with *
+    # Replace part of id with stars (*) (TODO: Improve)
+    ## Currently only "." as seperator is allowed
     if (id_format == "levels") {
         res[[path]] <- id_to_levels(res[[path]])
     } else if (id_format == "stars") {
-        .sep <- "\\."  # TODO: Improve
         escaped_ids <- gsub("\\.", "\\\\.", ids)  # TODO: Improve
-        res[[path]] <- gsub(sprintf("(^%1$s%2$s)(\\w+)(.*$)", escaped_ids, .sep),"\\1*\\3", res[[path]])
+        res[[path]] <- gsub(sprintf("(^%1$s%2$s)(\\w+)(.*$)", escaped_ids, "\\."),"\\1*\\3", res[[path]])
     }
-        
+
     return(res)
 }
