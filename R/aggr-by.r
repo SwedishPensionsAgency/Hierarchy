@@ -57,7 +57,13 @@ aggr_by <- function(data,
         df <- a$aggregate(ds, fun)
         
         # Replace label with "(all)" (TODO: Add support for factors)
-        if (id_format == "stars") df[[labels[1]]][df[[path]] == x] <- "(all)"
+        if (id_format == "stars") {
+            if (is.factor(df[[labels[1]]])) {
+                # Convert vector (factor -> character) due to issue #11
+                df[[labels[1]]] <- as.character(df[[labels[1]]])
+            }
+            df[[labels[1]]][df[[path]] == x] <- "(all)"
+        }
 
         df$root <- a$node(x)[1, ][[labels[1]]]  # obs: the first label in labels is used
 
