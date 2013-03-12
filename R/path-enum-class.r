@@ -32,9 +32,6 @@ path_enum <- setRefClass(
         
         # Validate path
         validate = function(path) if (!path_exists(path)) stop("path does not exist"),
-        
-        # Find the position of the last seperator in path
-        last_sep_position = function(path) max(gregexpr(.sep, path)[[1]]),
 
         # Parent methods
         # TODO: Add ancestors function, in the same way as descendants <-> children
