@@ -11,6 +11,7 @@ License: AGPLv3
 Depends:
     plyr,
     reshape2
+LazyData: true
 Collate:
     'path-enum-class.r'
     'count-occ.r'
