@@ -15,6 +15,7 @@
 #' @param id_format format of ids to "levels" or "stars"; default = "none".
 #' @param by_child if all calculations should be done on the children of the id node.
 #' Return column "root" will contain the (first) label of the children.
+#' @param grand_label label to be used for grand calculations (e.g. total sum). Default: "(all)"
 #' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
 #' @examples
@@ -35,6 +36,7 @@ aggr_by <- function(data,
                     fun = function(x) sum(x, na.rm = TRUE), 
                     id_format = "none",
                     by_child = FALSE,
+                    grand_label = "(all)",
                     ...) {
 
     # Only keep variables of interest and aggregate on those
@@ -56,13 +58,12 @@ aggr_by <- function(data,
     
         df <- a$aggregate(ds, fun)
         
-        # Replace label with "(all)" (TODO: Add support for factors)
-        if (id_format == "stars") {
+        # Replace label with "(all)"
+        if (include) {
             if (is.factor(df[[labels[1]]])) {
-                # Convert vector (factor -> character) due to issue #11
-                df[[labels[1]]] <- as.character(df[[labels[1]]])
+                df[[labels[1]]] <- as.character(df[[labels[1]]])  # factor -> character due to issue #11
             }
-            df[[labels[1]]][df[[path]] == x] <- "(all)"
+            df[[labels[1]]][df[[path]] == x] <- grand_label
         }
 
         df$root <- a$node(x)[1, ][[labels[1]]]  # obs: the first label in labels is used

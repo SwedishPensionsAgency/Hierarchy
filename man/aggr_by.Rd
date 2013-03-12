@@ -6,7 +6,8 @@
     labels = colnames(data)[2], dims = NULL,
     metrics = "value", ids = "1", include = FALSE,
     fun = function(x) sum(x, na.rm = TRUE),
-    id_format = "none", by_child = FALSE, ...)
+    id_format = "none", by_child = FALSE,
+    grand_label = "(all)", ...)
 }
 \arguments{
   \item{data}{data frame}
@@ -34,6 +35,9 @@
   \item{by_child}{if all calculations should be done on the
   children of the id node. Return column "root" will
   contain the (first) label of the children.}
+
+  \item{grand_label}{label to be used for grand
+  calculations (e.g. total sum). Default: "(all)"}
 
   \item{...}{arguments passed to the descendants_ids()
   function; start = where to start in the subtree, end =
