@@ -35,10 +35,7 @@ path_enum <- setRefClass(
         
         # Find the position of the last seperator in path
         last_sep_position = function(path) max(gregexpr(.sep, path)[[1]]),
-        
-        # Count occurences of a character in a string
-        count_char_occ = function(str, chr) sapply(gregexpr(sprintf("[^%s*]", chr), str), length) - 1,
-        
+
         # Parent methods
         # TODO: Add ancestors function, in the same way as descendants <-> children
         parent_id = function(path) {
@@ -51,7 +48,7 @@ path_enum <- setRefClass(
         has_parent = function(path) unlist(sapply(path, function(x) !is.null(parent_id(x)))),
 
         # Descendants methods (use "start" and "end" to define how deep it should go)
-        descendants_ids = function(path, end = max(count_char_occ(data()[[.path]], .sep)), start = 1, include = FALSE) {
+        descendants_ids = function(path, end = max(count_occ(data()[[.path]], .sep)), start = 1, include = FALSE) {
             validate(path)
             x <- match(path, paste("^%1$s.(\\d*.){", start, ",", end, "}$", sep = ""))
             x <- if (length(x) > 0) as.character(sort(x)) else NULL
@@ -113,7 +110,7 @@ path_enum <- setRefClass(
         to_json = function(path) {
 
             node_df <- node(path)
-            intent <- paste(rep("  ", count_char_occ(path, .sep)), collapse = "")
+            intent <- paste(rep("  ", count_occ(path, .sep)), collapse = "")
             
             res <- paste(
                 sprintf("\n%1$s{\n", intent),

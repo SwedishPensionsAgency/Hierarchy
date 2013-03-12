@@ -2,7 +2,7 @@
 \alias{id_to_levels}
 \title{Path enum to levels}
 \usage{
-  id_to_levels(ids, sep = ".")
+  id_to_levels(ids, sep = "\\.")
 }
 \arguments{
   \item{ids}{path enum vector}

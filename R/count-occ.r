@@ -6,9 +6,9 @@
 #' @param chr character 
 #' 
 #' @examples 
-#' count_occ("1.1.1.2.2", ".")
+#' count_occ("1.1.1.2.12")
 #' 
 #' @export
-count_occ <- function(str, chr) {
-    sapply(gregexpr(sprintf("[^%s*]", chr), str), length) - 1
+count_occ <- function(str, chr = "\\.") {
+    unlist(lapply(strsplit(as.character(str), chr), length)) - 1
 }

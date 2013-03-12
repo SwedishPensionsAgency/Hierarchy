@@ -9,6 +9,6 @@
 #' # id_to_levels(notes$Id)
 #' 
 #' @export
-id_to_levels <- function(ids, sep  = ".") {
+id_to_levels <- function(ids, sep  = "\\.") {
     count_occ(ids, sep) - min(count_occ(ids, sep)) + 1
 }
