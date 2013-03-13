@@ -1,0 +1,2 @@
+test <- melt(read.csv2("data/test.csv", stringsAsFactors = FALSE))
+aggr_by(test, ids = "1.1.1.2.2.1.4.2", path = "Id", labels = "Label", dims = c("variable"), metrics = c("value"), include = FALSE, end = 3, by_child = FALSE, id_format = "stars")
