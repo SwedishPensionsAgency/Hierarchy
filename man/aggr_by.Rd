@@ -44,7 +44,7 @@
 
   \item{formula}{dcast forumula}
 
-  \item{margins}{dcast margins}
+  \item{margins}{dcast margins; NULL means no margins}
 
   \item{sort_cols}{set to FALSE if columns shouldnt be
   reordered (only used with dcast)}
