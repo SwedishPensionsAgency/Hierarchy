@@ -2,8 +2,8 @@ Package: Hierarchy
 Type: Package
 Title: The Hierarchy package aims to simplify the work with hierarchical data
     structures in R.
-Version: 0.1
-Date: 2013-03-12
+Version: 0.2
+Date: 2013-03-17
 Author: Thomas Reinholdsson <reinholdsson@gmail.com>
 Maintainer: Thomas Reinholdsson <reinholdsson@gmail.com>
 Description: Hierarchy supports path enumeration calculations on data frames.
