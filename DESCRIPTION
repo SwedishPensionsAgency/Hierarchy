@@ -18,3 +18,4 @@ Collate:
     'id-to-levels.r'
     'aggr-by.r'
     'Hierarchy.r'
+    'sum-aggr-na.r'

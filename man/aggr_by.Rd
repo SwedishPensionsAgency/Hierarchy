@@ -5,12 +5,11 @@
   aggr_by(data, path = colnames(data)[1],
     labels = colnames(data)[2], dims = NULL,
     metrics = "value", ids = "1", include = FALSE,
-    fun = function(x) sum(x, na.rm = TRUE),
-    to_levels = FALSE, by_child = FALSE,
+    fun = sum_aggr_na, to_levels = FALSE, by_child = FALSE,
     grand_label = "(all)",
     cast_col = ifelse(by_child, "root", "variable"),
-    formula = paste(path, "+", labels, "~", cast_col),
-    margins = cast_col, order_columns = FALSE, ...)
+    formula = paste(path, "+", paste(labels, collapse = " + "), "~", cast_col),
+    margins = cast_col, sort_cols = FALSE, ...)
 }
 \arguments{
   \item{data}{data frame}
@@ -47,7 +46,7 @@
 
   \item{margins}{dcast margins}
 
-  \item{order_columns}{set to FALSE if columns shouldnt be
+  \item{sort_cols}{set to FALSE if columns shouldnt be
   reordered (only used with dcast)}
 
   \item{...}{arguments passed to the descendants_ids()

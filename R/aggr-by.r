@@ -18,7 +18,7 @@
 #' @param grand_label label to be used for grand calculations (e.g. total sum). Default: "(all)"
 #' @param cast_col dcast column
 #' @param formula dcast forumula
-#' @param margins dcast margins
+#' @param margins dcast margins; NULL means no margins
 #' @param sort_cols set to FALSE if columns shouldnt be reordered (only used with dcast)
 #' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
@@ -38,7 +38,7 @@ aggr_by <- function(data,
                     metrics = "value",
                     ids = "1",
                     include = FALSE,
-                    fun = function(x) sum(x, na.rm = TRUE), 
+                    fun = sum_aggr_na, 
                     to_levels = FALSE,
                     by_child = FALSE,
                     grand_label = "(all)",
@@ -95,7 +95,7 @@ aggr_by <- function(data,
     
     # If formula is not null, then use cast
     if (!is.null(formula)) {
-        
+
         # Keep column sorting key (is there a way to not order/sort columns in dcast?)
         column_sort_key <- as.character(unique(res[[cast_col]]))
         
@@ -104,7 +104,11 @@ aggr_by <- function(data,
         
         # If one wants to keep original column order
         if (!sort_cols) {
-            res <- res[ , c(path, labels, column_sort_key, "(all)")]
+            if (is.null(margins)) {
+                res <- res[ , c(path, labels, column_sort_key)]
+            } else {
+                res <- res[ , c(path, labels, column_sort_key, "(all)")]
+            }
         }
     }
     
