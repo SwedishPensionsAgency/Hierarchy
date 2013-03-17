@@ -113,8 +113,6 @@ aggr_by <- function(data,
         
         # Rename column grand_labels
         colnames(res)[colnames(res) == "(all)"] <- grand_label
-        
-        return(res)
     }
     
     # If to convert to hierarchical levels
