@@ -100,7 +100,7 @@ aggr_by <- function(data,
         column_sort_key <- as.character(unique(res[[cast_col]]))
         
         # Cast data
-        res <- dcast(res, formula, value.var = metrics, margins = margins, fill = NA_real_)
+        res <- dcast(res, formula, fun.aggregate = sum_aggr_na, value.var = metrics, margins = margins, fill = NA_real_)
         
         # If one wants to keep original column order
         if (!sort_cols) {
