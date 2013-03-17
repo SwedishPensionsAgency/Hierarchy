@@ -13,12 +13,9 @@ notes$label <- notes$Label_sv
 
 custom_aggr_by <- function(data,
                            path = "Id", 
-                           labels = c("label"), # , "notes"), 
+                           labels = c("label", "notes"), 
                            dims = c("year"), 
                            metrics = c("value"),
-                           include = TRUE, 
-                           end = 2, 
-                           by_child = FALSE,
                            to_levels = TRUE,
                            grand_label = .grand_label,
                            ...) {
@@ -28,9 +25,6 @@ custom_aggr_by <- function(data,
             labels = labels,
             dims = dims,
             metrics = metrics,
-            include = include,
-            end = end,
-            by_child = by_child,
             to_levels = to_levels,
             grand_label = grand_label,
             ...)
