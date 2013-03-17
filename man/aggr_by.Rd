@@ -4,7 +4,7 @@
 \usage{
   aggr_by(data, path = colnames(data)[1],
     labels = colnames(data)[2], dims = NULL,
-    metrics = "value", ids = "1", include = FALSE,
+    metrics = "value", ids = "1", include = TRUE,
     fun = sum_aggr_na, to_levels = FALSE, by_child = FALSE,
     grand_label = "(all)",
     cast_col = ifelse(by_child, "root", dims[1]),
