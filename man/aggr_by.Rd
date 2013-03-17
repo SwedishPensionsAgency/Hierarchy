@@ -7,7 +7,7 @@
     metrics = "value", ids = "1", include = FALSE,
     fun = sum_aggr_na, to_levels = FALSE, by_child = FALSE,
     grand_label = "(all)",
-    cast_col = ifelse(by_child, "root", "variable"),
+    cast_col = ifelse(by_child, "root", dims[1]),
     formula = paste(path, "+", paste(labels, collapse = " + "), "~", cast_col),
     margins = cast_col, sort_cols = FALSE, ...)
 }

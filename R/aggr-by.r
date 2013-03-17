@@ -42,7 +42,7 @@ aggr_by <- function(data,
                     to_levels = FALSE,
                     by_child = FALSE,
                     grand_label = "(all)",
-                    cast_col = ifelse(by_child, "root", "variable"),
+                    cast_col = ifelse(by_child, "root", dims[1]),
                     formula = paste(path, "+", paste(labels, collapse = " + "), "~", cast_col),
                     margins = cast_col,
                     sort_cols = FALSE,
@@ -100,7 +100,7 @@ aggr_by <- function(data,
         column_sort_key <- as.character(unique(res[[cast_col]]))
         
         # Cast data
-        res <- dcast(res, formula, fun.aggregate = fun, margins = margins, fill = NA_real_)
+        res <- dcast(res, formula, value.var = metrics, margins = margins, fill = NA_real_)
         
         # If one wants to keep original column order
         if (!sort_cols) {
@@ -110,6 +110,11 @@ aggr_by <- function(data,
                 res <- res[ , c(path, labels, column_sort_key, "(all)")]
             }
         }
+        
+        # Rename column grand_labels
+        colnames(res)[colnames(res) == "(all)"] <- grand_label
+        
+        return(res)
     }
     
     # If to convert to hierarchical levels
