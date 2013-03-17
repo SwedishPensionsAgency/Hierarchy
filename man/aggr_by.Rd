@@ -8,8 +8,9 @@
     fun = function(x) sum(x, na.rm = TRUE),
     to_levels = FALSE, by_child = FALSE,
     grand_label = "(all)",
-    formula = paste(path, "+", labels, "~", ifelse(by_child, "root", "variable")),
-    margins = ifelse(by_child, "root", "variable"), ...)
+    cast_col = ifelse(by_child, "root", "variable"),
+    formula = paste(path, "+", labels, "~", cast_col),
+    margins = cast_col, order_columns = FALSE, ...)
 }
 \arguments{
   \item{data}{data frame}
@@ -40,9 +41,14 @@
   \item{grand_label}{label to be used for grand
   calculations (e.g. total sum). Default: "(all)"}
 
+  \item{cast_col}{dcast column}
+
   \item{formula}{dcast forumula}
 
   \item{margins}{dcast margins}
+
+  \item{order_columns}{set to FALSE if columns shouldnt be
+  reordered (only used with dcast)}
 
   \item{...}{arguments passed to the descendants_ids()
   function; start = where to start in the subtree, end =

@@ -16,8 +16,10 @@
 #' @param by_child if all calculations should be done on the children of the id node.
 #' Return column "root" will contain the (first) label of the children.
 #' @param grand_label label to be used for grand calculations (e.g. total sum). Default: "(all)"
+#' @param cast_col dcast column
 #' @param formula dcast forumula
 #' @param margins dcast margins
+#' @param sort_cols set to FALSE if columns shouldnt be reordered (only used with dcast)
 #' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
 #' @examples
@@ -40,8 +42,10 @@ aggr_by <- function(data,
                     to_levels = FALSE,
                     by_child = FALSE,
                     grand_label = "(all)",
-                    formula = paste(path, "+", labels, "~", ifelse(by_child, "root", "variable")),
-                    margins = ifelse(by_child, "root", "variable"),
+                    cast_col = ifelse(by_child, "root", "variable"),
+                    formula = paste(path, "+", paste(labels, collapse = " + "), "~", cast_col),
+                    margins = cast_col,
+                    sort_cols = FALSE,
                     ...) {
 
     # Only select/keep variables of interest
@@ -91,13 +95,23 @@ aggr_by <- function(data,
     
     # If formula is not null, then use cast
     if (!is.null(formula)) {
+        
+        # Keep column sorting key (is there a way to not order/sort columns in dcast?)
+        column_sort_key <- as.character(unique(res[[cast_col]]))
+        
+        # Cast data
         res <- dcast(res, formula, fun.aggregate = fun, margins = margins, fill = NA_real_)
+        
+        # If one wants to keep original column order
+        if (!sort_cols) {
+            res <- res[ , c(path, labels, column_sort_key, "(all)")]
+        }
     }
     
     # If to convert to hierarchical levels
     if (to_levels) {
         res[[path]] <- id_to_levels(res[[path]])
     }
-
+    
     return(res)
 }
