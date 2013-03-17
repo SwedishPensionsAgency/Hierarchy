@@ -95,7 +95,7 @@ aggr_by <- function(data,
     
     # If formula is not null, then use cast
     if (!is.null(formula)) {
-
+        
         # Keep column sorting key (is there a way to not order/sort columns in dcast?)
         column_sort_key <- as.character(unique(res[[cast_col]]))
         
