@@ -7,7 +7,9 @@
     metrics = "value", ids = "1", include = FALSE,
     fun = function(x) sum(x, na.rm = TRUE),
     id_format = "none", by_child = FALSE,
-    grand_label = "(all)", ...)
+    grand_label = "(all)",
+    formula = paste(path, "+", labels, "~", ifelse(by_child, "root", "variable")),
+    ...)
 }
 \arguments{
   \item{data}{data frame}
@@ -38,6 +40,8 @@
 
   \item{grand_label}{label to be used for grand
   calculations (e.g. total sum). Default: "(all)"}
+
+  \item{formula}{cast forumula}
 
   \item{...}{arguments passed to the descendants_ids()
   function; start = where to start in the subtree, end =

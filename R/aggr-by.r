@@ -12,10 +12,11 @@
 #' @param ids node id (e.g. "1.2.1.3")
 #' @param include if the node itself should be returned as a row
 #' @param fun function to be used in metric calculations (e.g. sum)
-#' @param id_format format of ids to "levels" or "stars"; default = "none".
+#' @param to_levels if to convert ids to levels
 #' @param by_child if all calculations should be done on the children of the id node.
 #' Return column "root" will contain the (first) label of the children.
 #' @param grand_label label to be used for grand calculations (e.g. total sum). Default: "(all)"
+#' @param formula cast forumula
 #' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
 #' @examples
@@ -35,9 +36,10 @@ aggr_by <- function(data,
                     ids = "1",
                     include = FALSE,
                     fun = function(x) sum(x, na.rm = TRUE), 
-                    id_format = "none",
+                    to_levels = FALSE,
                     by_child = FALSE,
                     grand_label = "(all)",
+                    formula = paste(path, "+", labels, "~", ifelse(by_child, "root", "variable")),
                     ...) {
 
     # Only select/keep variables of interest
@@ -78,15 +80,33 @@ aggr_by <- function(data,
             aggr_each(x)
         })
     }
-
-    # Replace part of id with stars (*) (TODO: Improve)
-    ## Currently only "." as seperator is allowed
-    if (id_format == "levels") {
-        res[[path]] <- id_to_levels(res[[path]])
-    } else if (id_format == "stars") {
+    
+    # If by_child then convert ids to stars; to match rows
+    if (by_child) {
         escaped_ids <- gsub("\\.", "\\\\.", ids)  # TODO: Improve
         res[[path]] <- gsub(sprintf("(^%1$s%2$s)(\\w+)(.*$)", escaped_ids, "\\."),"\\1*\\3", res[[path]])
     }
+    
+    # If formula is not null, then use cast
+    if (!is.null(formula)) {
+        res <- dcast(res, formula, fun.aggregate = fun)
+    }
+    
+    # If to convert to hierarchical levels
+    if (to_levels) {
+        res[[path]] <- id_to_levels(res[[path]])
+    }
+
+    # Replace part of id with stars (*) (TODO: Improve)
+    ## Currently only "." as seperator is allowed
+#     if (id_format == "levels") {
+#         res[[path]] <- id_to_levels(res[[path]])
+#     } else if (id_format == "stars") {
+#         escaped_ids <- gsub("\\.", "\\\\.", ids)  # TODO: Improve
+#         res[[path]] <- gsub(sprintf("(^%1$s%2$s)(\\w+)(.*$)", escaped_ids, "\\."),"\\1*\\3", res[[path]])
+#     }
+    
+    
 
     return(res)
 }
