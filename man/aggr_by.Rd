@@ -6,10 +6,10 @@
     labels = colnames(data)[2], dims = NULL,
     metrics = "value", ids = "1", include = FALSE,
     fun = function(x) sum(x, na.rm = TRUE),
-    id_format = "none", by_child = FALSE,
+    to_levels = FALSE, by_child = FALSE,
     grand_label = "(all)",
     formula = paste(path, "+", labels, "~", ifelse(by_child, "root", "variable")),
-    ...)
+    margins = ifelse(by_child, "root", "variable"), ...)
 }
 \arguments{
   \item{data}{data frame}
@@ -31,8 +31,7 @@
   \item{fun}{function to be used in metric calculations
   (e.g. sum)}
 
-  \item{id_format}{format of ids to "levels" or "stars";
-  default = "none".}
+  \item{to_levels}{if to convert ids to levels}
 
   \item{by_child}{if all calculations should be done on the
   children of the id node. Return column "root" will
@@ -41,7 +40,9 @@
   \item{grand_label}{label to be used for grand
   calculations (e.g. total sum). Default: "(all)"}
 
-  \item{formula}{cast forumula}
+  \item{formula}{dcast forumula}
+
+  \item{margins}{dcast margins}
 
   \item{...}{arguments passed to the descendants_ids()
   function; start = where to start in the subtree, end =

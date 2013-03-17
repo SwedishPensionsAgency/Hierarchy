@@ -16,7 +16,8 @@
 #' @param by_child if all calculations should be done on the children of the id node.
 #' Return column "root" will contain the (first) label of the children.
 #' @param grand_label label to be used for grand calculations (e.g. total sum). Default: "(all)"
-#' @param formula cast forumula
+#' @param formula dcast forumula
+#' @param margins dcast margins
 #' @param ... arguments passed to the descendants_ids() function; start = where to start in the subtree, end = where to end in the subtree.
 #' 
 #' @examples
@@ -40,6 +41,7 @@ aggr_by <- function(data,
                     by_child = FALSE,
                     grand_label = "(all)",
                     formula = paste(path, "+", labels, "~", ifelse(by_child, "root", "variable")),
+                    margins = ifelse(by_child, "root", "variable"),
                     ...) {
 
     # Only select/keep variables of interest
@@ -89,24 +91,13 @@ aggr_by <- function(data,
     
     # If formula is not null, then use cast
     if (!is.null(formula)) {
-        res <- dcast(res, formula, fun.aggregate = fun)
+        res <- dcast(res, formula, fun.aggregate = fun, margins = margins, fill = NA_real_)
     }
     
     # If to convert to hierarchical levels
     if (to_levels) {
         res[[path]] <- id_to_levels(res[[path]])
     }
-
-    # Replace part of id with stars (*) (TODO: Improve)
-    ## Currently only "." as seperator is allowed
-#     if (id_format == "levels") {
-#         res[[path]] <- id_to_levels(res[[path]])
-#     } else if (id_format == "stars") {
-#         escaped_ids <- gsub("\\.", "\\\\.", ids)  # TODO: Improve
-#         res[[path]] <- gsub(sprintf("(^%1$s%2$s)(\\w+)(.*$)", escaped_ids, "\\."),"\\1*\\3", res[[path]])
-#     }
-    
-    
 
     return(res)
 }
