@@ -2,7 +2,7 @@
 #' 
 #' ...
 #' 
-#' @param ... arguments passed to the sum function
+#' @param x data
 #' 
 #' 
 #' @export
