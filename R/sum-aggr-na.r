@@ -6,10 +6,10 @@
 #' 
 #' 
 #' @export
-sum_aggr_na <- function(...) {
+sum_aggr_na <- function(x) {
     if (length(x) == 1 && is.na(x)) {
-        sum(..., na.rm = FALSE)
+        sum(x, na.rm = FALSE)
     } else {
-        sum(..., na.rm = TRUE)
+        sum(x, na.rm = TRUE)
     }
 }
